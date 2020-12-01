@@ -5,16 +5,19 @@ This document describes the data model for configuring an alerting channel
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
+apiVersion: v0
 
-name: string
+type: alertchannel
 
-description: string                     # optional string that describes this channel (ignored by the system)
-
-# supported alert channels
-type: [ slack | email | flock | mattermost ]
+metadata:
+  name: string
+  uuid: string                          # created by the system (do not populate)  
+ 
+  description: string                   # optional string that describes this channel (ignored by the system)
 
 config:
+  type: [ slack | email | flock | mattermost ]
+
   timezone: string                      # list of timezones see pytz.all_timezones, default: UTC
 
   # used for slack, mattermost and flock
@@ -30,6 +33,6 @@ config:
   sendHealthyDigests: boolean           # if true, send healthy digests on a daily basis if there were no 
                                         # incidents to report
 
-tags: [ string ]                        # list of tags associated with this object
+  tags: [ string ]                        # list of tags associated with this object
 
 ```

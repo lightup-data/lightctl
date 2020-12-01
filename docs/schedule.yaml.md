@@ -6,16 +6,21 @@ Primarily schedules are used for muting alerts based on events.
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
+apiVersion: v0
 
-name: string
+type: schedule
 
-description: string                     # description of the muting schedule (ignored by the system)
+metadata:
+  name: string
+  uuid: 
 
-timeRanges: [ integer, integer ]        # sequence of start_time, end_time time ranges for the schedule
+  description: string                     # description of the muting schedule (ignored by the system)
 
-repeatInterval: integer                 # schedule repeat interval in seconds - indicates a recurring event
-repeatCount: integer                    # number of times to repeat a recurring event
+config:
+  timeRanges: [ integer, integer ]        # sequence of start_time, end_time time ranges for the schedule
 
-tags: [ string ]                        # list of tags associated with this object
+  repeatInterval: integer                 # schedule repeat interval in seconds - indicates a recurring event
+  repeatCount: integer                    # number of times to repeat a recurring event
+
+  tags: [ string ]                        # list of tags associated with this object
 ```

@@ -5,18 +5,20 @@ This document describes the data model for configuring a KPI
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
+apiVersion: v0
 
-# datasource associated with this KPI. can be specified by either name or uuid.
-source:
-  name: string
-  uuid: string
+type: metric
 
-name: string                            # name of the kpi
+metadata:
+  # datasource associated with this KPI. can be specified by either name or uuid.
+  source:
+    name: string
+    uuid: string
 
-description: string                     # optional string that describes this kpi (ignored by the system)
+  name: string                            # name of the kpi
+  uuid: string                            # created by the system
 
-type: [ metric ]
+  description: string                     # optional string that describes this kpi (ignored by the system)
 
 config:
   tableName: string                     # table name - not used with customSql option
@@ -49,5 +51,5 @@ config:
   pollingInterval: integer              # how frequently the data source needs to be polled for
                                         # this KPI in seconds
 
-tags: [ string ]                        # list of tags associated with this object
+  tags: [ string ]                        # list of tags associated with this object
 ```

@@ -23,11 +23,9 @@ metadata:
   tags: [ string ]                      # list of tags associated with this object
 
 config:
-  symptom: |
-    sharp_change | distribution_drift | trend_change | value_change | 
-    out_of_bounds | sustained_local_drift | drift_compared_to_past
+  symptom: enum                         # see list of symptoms below
 
-  # Training settings (Also see Advanced settings below). this is only needed for 
+  # Training settings (Also see Advanced settings below). this is only needed for rules that need training
   learningPeriod:                       # update to training period (?)
     startTimestamp: float               # epoch timestamp marking the start of training data (included)
     endTimestamp: float                 # epoch timestamp marking the end of training data (excluded)
@@ -54,7 +52,7 @@ config:
 
   # Advanced settings for training - only applicable for some cases
   smoothingWindow: integer
-  detectionCriteria: tolerance_interval | zscore | double_mad
+  detectionCriteria: toleranceInterval | zscore | doubleMad
 
   ownedBy: string                       # username who owns this rule (defaults to the user who created it but can be 
                                         # updated)
@@ -68,7 +66,23 @@ status:
 
   lastSampleTimestamp: float            # epoch timestamp of the last sample that was processed by this rule
 ```
-Additional structures used above:
+
+## Supported Symptom types
+
+The following symptom types are supported
+
+```yaml
+- sharpChange
+- distributionDrift
+- trendChange
+- valueChange
+- outOfBounds
+- sustainedLocalDrift
+- driftComparedToPast
+```
+
+
+## Additional structures used above:
 
 ```yaml
 timeRange:

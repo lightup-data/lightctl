@@ -7,7 +7,7 @@ This document describes the data model for configuring an alerting channel
 
 apiVersion: v0
 
-type: alertchannel
+type: alertChannel
 
 metadata:
   name: string

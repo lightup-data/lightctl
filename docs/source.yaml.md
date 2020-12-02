@@ -52,5 +52,11 @@ config:
 The following data sources are supported under the type field for source.
 
 ```yaml
-postgres | redshift | snowflake | bigquery | athena | databricks | mysql
+- postgres
+- redshift
+- snowflake
+- bigquery
+- athena
+- databricks
+- mysql
 ```

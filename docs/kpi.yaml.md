@@ -57,5 +57,5 @@ config:
 ## KPI Aggregation Function Types
 
 ```yaml
-sum | count | count unique | average
+sum | count | countUnique | average
 ```

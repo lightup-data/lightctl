@@ -19,8 +19,7 @@ metadata:
   tags: [ string ]                      # list of tags associated with this object
 
 config:
-  # supported data sources 
-  type: postgres | redshift | snowflake | bigquery | athena | databricks | mysql
+  type: enum                            # supported data sources  - see below
 
   # configuration parameters for postgres, redshift, mysql, snowflake
   host: string                          # hostname depending on the type.
@@ -46,4 +45,12 @@ config:
   workspaceId: string
   clusterId: string  
   token: string
+```
+
+## Supported data sources
+
+The following data sources are supported under the type field for source.
+
+```yaml
+postgres | redshift | snowflake | bigquery | athena | databricks | mysql
 ```

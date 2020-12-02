@@ -7,7 +7,7 @@ This document describes the data model for configuring a KPI
 
 apiVersion: v0
 
-type: metric
+type: kpi
 
 metadata:
   # datasource associated with this KPI. can be specified by either name or uuid.
@@ -27,7 +27,7 @@ config:
 
   transform:                            # choose one of customSql or function
     customSql: string                   # customSql is data source specific SQL
-    function: sum | count | count unique | average
+    function: enum                      # see function types below
 
   timezone: string                      # timezone (see pytz.all_timezones for options, default UTC)
 
@@ -52,4 +52,10 @@ config:
                                         # read samples before (now - synchronizationDelay) in seconds
   pollingInterval: integer              # how frequently the data source needs to be polled for
                                         # this KPI in seconds
+```
+
+## KPI Aggregation Function Types
+
+```yaml
+sum | count | count unique | average
 ```

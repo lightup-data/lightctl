@@ -1,4 +1,4 @@
-# Alerting Channel YAML documentation
+# Alert Channel YAML documentation
 
 This document describes the data model for configuring an alerting channel
 
@@ -18,7 +18,7 @@ metadata:
   tags: [ string ]                      # list of tags associated with this object
 
 config:
-  type: slack | email | flock | mattermost
+  type: enum                            # see the list of types below
 
   timezone: string                      # list of timezones see pytz.all_timezones, default: UTC
 
@@ -31,7 +31,14 @@ config:
   emailAddressList: [ string ]          # list of emails to send the alert to
 
   muteResolvedAlerts: boolean           # if true, only send out open alerts (not closed or resolved alerts)
-  digestPeriod: immediately | hour | day | week  # when to send out alert messages
+  digestPeriod: 0 | 3600 | 86400 | 604800  # when to send out alert messages - immediately, hourly, daily, weekly
   sendHealthyDigests: boolean           # if true, send healthy digests on a daily basis if there were no 
                                         # incidents to report
+```
+
+## Alert Channel Types
+
+The types of alert channels that are currently supported are 
+```yaml
+slack | email | flock | mattermost
 ```

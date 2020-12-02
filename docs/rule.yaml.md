@@ -20,6 +20,8 @@ metadata:
 
   description: string                   # optional string that describes this rule (ignored by the system)
 
+  tags: [ string ]                      # list of tags associated with this object
+
 config:
   symptom: |
     [ sharp_change | distribution_drift | trend_change | value_change | out_of_bounds |
@@ -50,17 +52,17 @@ config:
   # Liveness
   isLive: boolean                       # true if the rule should start running
 
-  # Advanced settings for training
+  # Advanced settings for training - only applicable for some cases
   smoothingWindow: integer
-  detectionCriteria: [ tolerance_interval | zscore | double_mad ]
+  detectionCriteria: tolerance_interval | zscore | double_mad
 
-  tags: [ string ]                      # list of tags associated with this object
+  ownedBy: string                       # username who owns this rule (defaults to the user who created it but can be 
+                                        # updated)
 
 status:
   isTrained: bool                       # true if filter has been trained
-  trainingSummary: json                 # training details
 
-  ownedBy: string                       # username who created/owns this rule
+  trainingSummary: { string : any }     # training details populated after training completes
 
   lastUpdatedBy: string                 # username who last updated this rule
 

@@ -15,8 +15,10 @@ metadata:
  
   description: string                   # optional string that describes this channel (ignored by the system)
 
+  tags: [ string ]                      # list of tags associated with this object
+
 config:
-  type: [ slack | email | flock | mattermost ]
+  type: slack | email | flock | mattermost
 
   timezone: string                      # list of timezones see pytz.all_timezones, default: UTC
 
@@ -29,10 +31,7 @@ config:
   emailAddressList: [ string ]          # list of emails to send the alert to
 
   muteResolvedAlerts: boolean           # if true, only send out open alerts (not closed or resolved alerts)
-  digestPeriod: [ immediately | hour | day | week ] # when to send out alert messages
+  digestPeriod: immediately | hour | day | week  # when to send out alert messages
   sendHealthyDigests: boolean           # if true, send healthy digests on a daily basis if there were no 
                                         # incidents to report
-
-  tags: [ string ]                        # list of tags associated with this object
-
 ```

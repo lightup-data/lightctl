@@ -16,9 +16,11 @@ metadata:
   description: string                   # optional string that describes this source. ignored
                                         # by the system.
 
+  tags: [ string ]                      # list of tags associated with this object
+
 config:
   # supported data sources 
-  type: [ postgres | redshift | snowflake | bigquery | athena | databricks | mysql ]
+  type: postgres | redshift | snowflake | bigquery | athena | databricks | mysql
 
   # configuration parameters for postgres, redshift, mysql, snowflake
   host: string                          # hostname depending on the type.
@@ -44,6 +46,4 @@ config:
   workspaceId: string
   clusterId: string  
   token: string
-
-  tags: [ string ]                      # list of tags associated with this object
 ```

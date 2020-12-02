@@ -12,15 +12,15 @@ type: schedule
 
 metadata:
   name: string
-  uuid: 
+  uuid: string
 
-  description: string                     # description of the muting schedule (ignored by the system)
+  description: string                   # description of the muting schedule (ignored by the system)
+
+  tags: [ string ]                      # list of tags associated with this object
 
 config:
-  timeRanges: [ integer, integer ]        # sequence of start_time, end_time time ranges for the schedule
+  timeRanges: [ timeRange ]             # sequence of time range (see definition of timeRange)
 
-  repeatInterval: integer                 # schedule repeat interval in seconds - indicates a recurring event
-  repeatCount: integer                    # number of times to repeat a recurring event
-
-  tags: [ string ]                        # list of tags associated with this object
+  repeatInterval: integer               # schedule repeat interval in seconds - indicates a recurring event
+  repeatCount: integer                  # number of times to repeat a recurring event
 ```

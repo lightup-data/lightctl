@@ -24,8 +24,8 @@ metadata:
 
 config:
   symptom: |
-    [ sharp_change | distribution_drift | trend_change | value_change | out_of_bounds |
-      sustained_local_drift | drift_compared_to_past ]
+    sharp_change | distribution_drift | trend_change | value_change | 
+    out_of_bounds | sustained_local_drift | drift_compared_to_past
 
   # Training settings (Also see Advanced settings below). this is only needed for 
   learningPeriod:                       # update to training period (?)

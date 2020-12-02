@@ -6,7 +6,7 @@ Each YAML object follows the template:
 
 ```yaml
 apiVersion: v0
-type: [ source | metric | rule | alertchannel | schedule ]
+type: source | metric | rule | alertchannel | schedule
 
 metadata: 
   name:

@@ -29,13 +29,13 @@ config:
   learningPeriod:                       # update to training period (?)
     startTimestamp: float               # epoch timestamp marking the start of training data (included)
     endTimestamp: float                 # epoch timestamp marking the end of training data (excluded)
-    additionalPeriods: [ timeRange ]
+    additionalPeriods: [ timeRange ]    # additional time periods to include in learning period
 
   # Detection settings
   direction: [ up | down | both ]
   aggressiveness:
-    level: [ 1 | 2 | 3 | ... | 9 | 10 ]
-    override: float
+    level: integer                      # number between 1-10 from low to high aggressiveness
+    override: float                     # aggressiveness override (limit usage)
 
   bounds: bound                         # only valid with out of bounds symptom, see definition of bound below
 
@@ -58,7 +58,7 @@ config:
                                         # updated)
 
 status:
-  isTrained: bool                       # true if filter has been trained
+  isTrained: boolean                    # true if filter has been trained
 
   trainingSummary: { string : any }     # training details populated after training completes
 

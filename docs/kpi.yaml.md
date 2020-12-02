@@ -31,8 +31,8 @@ config:
 
   timezone: string                      # timezone (see pytz.all_timezones for options, default UTC)
 
-  # interval in seconds
-  interval: 1 | 60 | 3600 | 86400 | 604800 # second, minute, hour, day, week
+  interval: integer                     # interval in seconds - second, minute, hour, day, week 
+                                        # encoded as 1 | 60 | 3600 | 86400 | 604800
 
   valueColumns: [ string ]              # columns to monitor
   timestampColumn: string               # timestamp column

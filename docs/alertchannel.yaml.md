@@ -31,7 +31,8 @@ config:
   emailAddressList: [ string ]          # list of emails to send the alert to
 
   muteResolvedAlerts: boolean           # if true, only send out open alerts (not closed or resolved alerts)
-  digestPeriod: 0 | 3600 | 86400 | 604800  # when to send out alert messages - immediately, hourly, daily, weekly
+  digestPeriod: integer                 # when to send out alert messages - immediately, hourly, daily, weekly
+                                        # encoded as 0 | 3600 | 86400 | 604800 respectively.
   sendHealthyDigests: boolean           # if true, send healthy digests on a daily basis if there were no 
                                         # incidents to report
 ```

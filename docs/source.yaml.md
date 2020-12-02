@@ -5,16 +5,22 @@ This document describes the data model for configuring a data source.
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
-description: string               # optional string that describes this source. ignored
-                                  # by the system.
+apiVersion: v0
 
-name: string
+type: source
 
-# supported data sources 
-type: [ postgres | redshift | snowflake | bigquery | athena | databricks | mysql ]
+metadata:
+  name: string
+  uuid: string                          # configured by system (do not fill in)
+
+  description: string                   # optional string that describes this source. ignored
+                                        # by the system.
+
+  tags: [ string ]                      # list of tags associated with this object
 
 config:
+  type: enum                            # supported data sources  - see below
+
   # configuration parameters for postgres, redshift, mysql, snowflake
   host: string                          # hostname depending on the type.
                                         # for snowflake, you can omit snowflakecomputing.com
@@ -39,6 +45,18 @@ config:
   workspaceId: string
   clusterId: string  
   token: string
+```
 
-tags: [ string ]                        # list of tags associated with this object
+## Supported data sources
+
+The following data sources are supported under the type field for source.
+
+```yaml
+- postgres
+- redshift
+- snowflake
+- bigquery
+- athena
+- databricks
+- mysql
 ```

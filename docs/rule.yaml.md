@@ -5,58 +5,88 @@ This document describes the data model for configuring a Rule
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
+apiVersion: v0
 
-# kpi associated with this rule. can be specified by either name or uuid.
-kpi:
-  name: string
-  uuid: string
+type: rule
 
-name: string                          # name of the rule
+metadata:
+  # kpi associated with this rule. can be specified by either name or uuid.
+  kpi:
+    name: string
+    uuid: string
 
-description: string                   # optional string that describes this rule (ignored by the system)
+  name: string                          # name of the rule
+  uuid: string                          # uuid of the rule (system implemented - do not fill in)
 
-symptom: |
-  [ sharp_change | distribution_drift | trend_change | value_change | out_of_bounds |
-    sustained_local_drift | drift_compared_to_past ]
+  description: string                   # optional string that describes this rule (ignored by the system)
+
+  tags: [ string ]                      # list of tags associated with this object
 
 config:
-  # Training settings (Also see Advanced settings below)
-  learningPeriod:                   # update to training period (?)
-    startTimestamp: datetime format "2020-10-08T10:00:00Z"
-    endTimestamp: datetime
-    additionalPeriods: [ timeRange ]
+  symptom: enum                         # see list of symptoms below
+
+  # Training settings (Also see Advanced settings below). this is only needed for rules that need training
+  learningPeriod:                       # update to training period (?)
+    startTimestamp: float               # epoch timestamp marking the start of training data (included)
+    endTimestamp: float                 # epoch timestamp marking the end of training data (excluded)
+    additionalPeriods: [ timeRange ]    # additional time periods to include in learning period
 
   # Detection settings
   direction: [ up | down | both ]
   aggressiveness:
-    level: [ 1 | 2 | 3 | ... | 9 | 10 ]
-    override: float
-  bounds: bound                     # only valid with out of bounds symptom, see definition below
+    level: integer                      # number between 1-10 from low to high aggressiveness
+    override: float                     # aggressiveness override (limit usage)
 
-  driftDuration: integer            # seconds after which drift is considered an incident
-  recoveryDuration: integer         # seconds after drift has settled is the incident considered closed
+  bounds: bound                         # only valid with out of bounds symptom, see definition of bound below
+
+  driftDuration: integer                # seconds after which drift is considered an incident
+  recoveryDuration: integer             # seconds after drift has settled is the incident considered closed
 
   # Alert configuration
-  schedules: [ string ]             # list of muting schedule uuids
-  isMuted: boolean                  # mute the rule
-  alertChannels: [ string ]         # list of alerting channel uuids
+  schedules: [ string ]                 # list of muting schedule uuids
+  isMuted: boolean                      # mute the rule
+  alertChannels: [ string ]             # list of alerting channel uuids
 
   # Liveness
-  isLive: boolean                   # true if the rule is live/running
+  isLive: boolean                       # true if the rule should start running
 
-  # Advanced settings for training
+  # Advanced settings for training - only applicable for some cases
   smoothingWindow: integer
-  detectionCriteria: [ tolerance_interval | zscore | double_mad ]
+  detectionCriteria: toleranceInterval | zscore | doubleMad
 
-tags: [ string ]                        # list of tags associated with this object
+  ownedBy: string                       # username who owns this rule (defaults to the user who created it but can be 
+                                        # updated)
+
+status:
+  isTrained: boolean                    # true if rule has been trained
+
+  trainingSummary: { string : any }     # training details populated after training completes
+
+  lastUpdatedBy: string                 # username who last updated this rule
+
+  lastSampleTimestamp: float            # epoch timestamp of the last sample that was processed by this rule
 ```
-Additional structures used above:
+
+## Supported Symptom types
+
+The following symptom types are supported
+
+```yaml
+- sharpChange
+- distributionDrift
+- trendChange
+- valueChange
+- outOfBounds
+- sustainedLocalDrift
+- driftComparedToPast
+```
+
+## Additional structures used above:
 
 ```yaml
 timeRange:
-  startTimestamp:
-  endTimestamp:
+  startTimestamp: float                 # epoch timestamp
+  endTimestamp: float                   # epoch timestamp
 
 bound:
   upper: float

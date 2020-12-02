@@ -5,35 +5,39 @@ This document describes the data model for configuring a KPI
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v1beta
+apiVersion: v0
 
-# datasource associated with this KPI. can be specified by either name or uuid.
-source:
-  name: string
-  uuid: string
+type: kpi
 
-name: string                            # name of the kpi
+metadata:
+  # datasource associated with this KPI. can be specified by either name or uuid.
+  sources:
+    name: string
+    uuid: string
 
-description: string                     # optional string that describes this kpi (ignored by the system)
+  name: string                          # name of the kpi
+  uuid: string                          # created by the system
 
-type: [ metric ]
+  description: string                   # optional string that describes this kpi (ignored by the system)
+
+  tags: [ string ]                      # list of tags associated with this object
 
 config:
   tableName: string                     # table name - not used with customSql option
 
   transform:                            # choose one of customSql or function
     customSql: string                   # customSql is data source specific SQL
-    function: [ sum | count | count unique | average ]
+    function: enum                      # see function types below
 
   timezone: string                      # timezone (see pytz.all_timezones for options, default UTC)
 
-  # interval in seconds - support second, minute, hour, day, week
-  interval: [ second | minute | hour | day | week ]
+  interval: integer                     # interval in seconds - second, minute, hour, day, week 
+                                        # encoded as 1 | 60 | 3600 | 86400 | 604800
 
-  valueColumn: [ string ]               # columns to monitor
+  valueColumns: [ string ]              # columns to monitor
   timestampColumn: string               # timestamp column
 
-  sliceColumn: [ string ]               # list of slice columns
+  sliceColumns: [ string ]              # list of slice columns
   sliceOptions:                         # options
     include: [ string ]                 # list of slices in the sliceColumn to include
                                         # other slices will be ignored
@@ -48,6 +52,10 @@ config:
                                         # read samples before (now - synchronizationDelay) in seconds
   pollingInterval: integer              # how frequently the data source needs to be polled for
                                         # this KPI in seconds
+```
 
-tags: [ string ]                        # list of tags associated with this object
+## KPI Aggregation Function Types
+
+```yaml
+sum | count | countUnique | average
 ```

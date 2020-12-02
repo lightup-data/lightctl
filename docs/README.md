@@ -6,7 +6,7 @@ Each YAML object follows the template:
 
 ```yaml
 apiVersion: v0
-type: source | metric | rule | alertchannel | schedule
+type: enum                            # see supported object types below
 
 metadata: 
   name:
@@ -21,4 +21,10 @@ config:
 status:
   # ... object status descriptors
 
+```
+
+## Supported object types
+
+```yaml
+source | kpi | rule | schedule | alertChannel 
 ```

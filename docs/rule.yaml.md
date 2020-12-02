@@ -58,7 +58,7 @@ config:
                                         # updated)
 
 status:
-  isTrained: boolean                    # true if filter has been trained
+  isTrained: boolean                    # true if rule has been trained
 
   trainingSummary: { string : any }     # training details populated after training completes
 
@@ -80,7 +80,6 @@ The following symptom types are supported
 - sustainedLocalDrift
 - driftComparedToPast
 ```
-
 
 ## Additional structures used above:
 

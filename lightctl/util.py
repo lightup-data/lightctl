@@ -6,11 +6,15 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-def cli_print(obj, is_json=False):
-    if not is_json:
-        print(yaml.dump(obj))
-    else:
-        print(json.dumps(obj, indent=4))
+class CliPrinter:
+    def __init__(self, use_json_format=False):
+        self._use_json_format = use_json_format
+
+    def print(self, obj):
+        if self._use_json_format:
+            print(json.dumps(obj, indent=4))
+        else:
+            print(yaml.dump(obj))
 
 
 def check_status_code(r, expected=200):

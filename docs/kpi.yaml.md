@@ -5,7 +5,7 @@ This document describes the data model for configuring a KPI
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v0
+apiVersion: v1
 
 type: kpi
 
@@ -31,7 +31,7 @@ config:
 
   timezone: string                      # timezone (see pytz.all_timezones for options, default UTC)
 
-  interval: integer                     # interval in seconds - second, minute, hour, day, week 
+  interval: integer                     # interval in seconds - second, minute, hour, day, week
                                         # encoded as 1 | 60 | 3600 | 86400 | 604800
 
   valueColumns: [ string ]              # columns to monitor

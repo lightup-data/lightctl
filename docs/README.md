@@ -5,14 +5,14 @@ The documentation formatting style follows https://docs.microsoft.com/en-us/azur
 Each YAML object follows the template:
 
 ```yaml
-apiVersion: v0
+apiVersion: v1
 type: enum                            # see supported object types below
 
-metadata: 
+metadata:
   name:
   uuid:
-  description: 
-   
+  description:
+
   # ... other metadata parameters
 
 config:
@@ -26,5 +26,5 @@ status:
 ## Supported object types
 
 ```yaml
-source | kpi | rule | schedule | alertChannel 
+source | kpi | rule | schedule | alertChannel
 ```

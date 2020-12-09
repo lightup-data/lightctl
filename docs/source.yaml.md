@@ -5,7 +5,7 @@ This document describes the data model for configuring a data source.
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v0
+apiVersion: v1
 
 type: source
 
@@ -43,7 +43,7 @@ config:
   # in addition, dbName is also used in databricks
   workspaceUrl: string
   workspaceId: string
-  clusterId: string  
+  clusterId: string
   token: string
 ```
 

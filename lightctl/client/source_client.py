@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class SourceClient(BaseClient):
     @property
     def sources_url(self):
-        return urllib.parse.urljoin(self.url_base, "/api/v0/sources/")
+        return urllib.parse.urljoin(self.url_base, "/api/v1/sources/")
 
     def list_sources(self):
         return self.get(self.sources_url)
@@ -33,5 +33,5 @@ class SourceClient(BaseClient):
         self.delete(self.sources_url, id_)
 
     def inspect(self, data):
-        urllib.parse.urljoin(self.url_base, "/api/v0/sources-inspection/")
+        urllib.parse.urljoin(self.url_base, "/api/v1/sources-inspection/")
         return self.post(self.sources_url, data)

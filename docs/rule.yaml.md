@@ -5,7 +5,7 @@ This document describes the data model for configuring a Rule
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v0
+apiVersion: v1
 
 type: rule
 
@@ -54,7 +54,7 @@ config:
   smoothingWindow: integer
   detectionCriteria: toleranceInterval | zscore | doubleMad
 
-  ownedBy: string                       # username who owns this rule (defaults to the user who created it but can be 
+  ownedBy: string                       # username who owns this rule (defaults to the user who created it but can be
                                         # updated)
 
 status:

@@ -6,7 +6,7 @@ import click
 
 from lightctl.command import source_command, version_command
 from lightctl.command.common import ContextObject
-from lightctl.util import CliPrinter
+from lightctl.util import CliPrinter, FileLoader
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
@@ -31,7 +31,10 @@ $ LIGHTUP_URL_BASE=https://app.demo.lightup.ai python3 bin/lightctl filter list\
 @click.option("--json", default=False, is_flag=True)
 @click.pass_context
 def cli(ctx, debug, json):
-    ctx.obj = ContextObject(printer=CliPrinter(use_json_format=json))
+    ctx.obj = ContextObject(
+        printer=CliPrinter(use_json_format=json),
+        file_loader=FileLoader(use_json_format=json),
+    )
     if debug:
         logging.basicConfig(level=logging.DEBUG)
     else:

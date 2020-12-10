@@ -64,11 +64,11 @@ class BaseClient:
         return json.loads(r.text)
 
     @_logged_in
-    def post(self, endpoint, data: Dict):
+    def post(self, endpoint, data: Dict, expected_status=201):
         headers = self._prepare_post_put_headers()
         data = json.dumps(data, default=_json_serial)
         r = self.client.post(endpoint, data=data, headers=headers)
-        check_status_code(r, 201)
+        check_status_code(r, expected_status)
         return json.loads(r.text)
 
     @_logged_in

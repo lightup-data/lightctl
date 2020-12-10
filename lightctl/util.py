@@ -17,6 +17,18 @@ class CliPrinter:
             print(yaml.dump(obj))
 
 
+class FileLoader:
+    def __init__(self, use_json_format=False):
+        self._use_json_format = use_json_format
+
+    def load(self, file) -> dict:
+        with open(file, "rb") as f:
+            if self._use_json_format:
+                return json.load(f)
+            else:
+                return yaml.safe_load(f)
+
+
 def check_status_code(r, expected=200):
     if r.status_code != expected:
         logger.debug(

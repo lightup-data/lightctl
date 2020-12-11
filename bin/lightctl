@@ -4,7 +4,12 @@ import logging
 
 import click
 
-from lightctl.command import metric_command, source_command, version_command
+from lightctl.command import (
+    metric_command,
+    rule_command,
+    source_command,
+    version_command,
+)
 from lightctl.command.common import ContextObject
 from lightctl.util import CliPrinter, FileLoader
 
@@ -44,6 +49,7 @@ def cli(ctx, debug, json):
 cli.add_command(version_command.version)
 cli.add_command(source_command.source)
 cli.add_command(metric_command.metric)
+cli.add_command(rule_command.rule)
 
 
 if __name__ == "__main__":

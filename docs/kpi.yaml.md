@@ -25,9 +25,9 @@ metadata:
 config:
   tableName: string                     # table name - not used with customSql option
 
-  transform:                            # choose one of customSql or function
-    customSql: string                   # customSql is data source specific SQL
-    function: enum                      # see function types below
+  # choose one of customSql or function
+  customSql: string                     # customSql is data source specific SQL
+  aggregationFunction: enum             # see function types below
 
   timezone: string                      # timezone (see pytz.all_timezones for options, default UTC)
 

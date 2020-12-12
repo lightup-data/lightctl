@@ -6,7 +6,7 @@ Primarily schedules are used for muting alerts based on events.
 ```yaml
 # Lightup Data Inc.
 
-apiVersion: v0
+apiVersion: v1
 
 type: schedule
 

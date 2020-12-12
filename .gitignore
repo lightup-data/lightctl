@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# dev virtual env
+lightctl-venv/
+
 # Distribution / packaging
 .Python
 build/

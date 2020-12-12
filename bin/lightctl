@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+import logging
+
+import click
+
+from lightctl.command import (
+    metric_command,
+    rule_command,
+    source_command,
+    version_command,
+)
+from lightctl.command.common import ContextObject
+from lightctl.util import CliPrinter, FileLoader
+
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+
+# TODO: [prod] clean up help message
+help_message = """ You can override default setting by setting following environment variable
+LIGHTUP_URL_BASE
+LIGHTUP_USERNAME
+LIGHTUP_PASSWORD
+
+Examples:\n
+$ python3 bin/lightctl filter list\n
+$ python3 bin/lightctl filter get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+
+$ LIGHTUP_URL_BASE=`minikube service backend-backend -n lightup-system --url` bin/lightctl filter list\n
+$ LIGHTUP_URL_BASE=https://app.demo.lightup.ai python3 bin/lightctl filter list\n
+"""
+
+
+@click.group(context_settings=CONTEXT_SETTINGS, help=help_message)
+@click.option("--debug", default=False, is_flag=True)
+@click.option("--json", default=False, is_flag=True)
+@click.pass_context
+def cli(ctx, debug, json):
+    ctx.obj = ContextObject(
+        printer=CliPrinter(use_json_format=json),
+        file_loader=FileLoader(use_json_format=json),
+    )
+    if debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+
+cli.add_command(version_command.version)
+cli.add_command(source_command.source)
+cli.add_command(metric_command.metric)
+cli.add_command(rule_command.rule)
+
+
+if __name__ == "__main__":
+    cli()

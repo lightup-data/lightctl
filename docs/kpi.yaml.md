@@ -33,6 +33,7 @@ config:
 
   interval: integer                     # interval in seconds - second, minute, hour, day, week 
                                         # encoded as 1 | 60 | 3600 | 86400 | 604800
+                                        # this could also be string (since we may need to support month)
 
   valueColumns: [ string ]              # columns to monitor
   timestampColumn: string               # timestamp column

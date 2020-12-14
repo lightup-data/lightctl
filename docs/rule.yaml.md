@@ -26,10 +26,7 @@ config:
   symptom: enum                         # see list of symptoms below
 
   # Training settings (Also see Advanced settings below). this is only needed for rules that need training
-  learningPeriod:                       # update to training period (?)
-    startTimestamp: float               # epoch timestamp marking the start of training data (included)
-    endTimestamp: float                 # epoch timestamp marking the end of training data (excluded)
-    additionalPeriods: [ timeRange ]    # additional time periods to include in learning period
+  learningPeriods: [ timeRange ]        # update to training periods?
 
   # Detection settings
   direction: [ up | down | both ]

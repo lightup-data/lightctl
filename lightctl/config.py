@@ -1,6 +1,6 @@
 import os
 
-__version__ = "v1"
+__version__ = "v1alpha"
 
 
 # TODO: [prod] remove credential

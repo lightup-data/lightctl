@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class SourceClient(BaseClient):
     @property
     def sources_url(self):
-        return urllib.parse.urljoin(self.url_base, "/api/v1/sources/")
+        return urllib.parse.urljoin(self.url_base, "/api/v1alpha/sources/")
 
     def list_sources(self):
         return self.get(self.sources_url)
@@ -32,15 +32,15 @@ class SourceClient(BaseClient):
         self.delete(self.sources_url, id)
 
     def inspect(self, data):
-        url = urllib.parse.urljoin(self.url_base, "/api/v1/sources-inspection")
+        url = urllib.parse.urljoin(self.url_base, "/api/v1alpha/sources-inspection")
         return self.post(url, data, expected_status=200)
 
     def list_tables(self, id):
-        url = urllib.parse.urljoin(self.url_base, f"/api/v1/sources/{id}/tables")
+        url = urllib.parse.urljoin(self.url_base, f"/api/v1alpha/sources/{id}/tables")
         return self.get(url)
 
     def get_schema(self, id, table_name):
         url = urllib.parse.urljoin(
-            self.url_base, f"/api/v1/sources/{id}/schema?table_name={table_name}"
+            self.url_base, f"/api/v1alpha/sources/{id}/schema?table_name={table_name}"
         )
         return self.get(url)

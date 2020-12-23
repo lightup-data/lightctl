@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class RuleClient(BaseClient):
     @property
     def rules_url(self):
-        return urllib.parse.urljoin(self.url_base, "/api/v1/filters/")
+        return urllib.parse.urljoin(self.url_base, "/api/v1alpha/filters/")
 
     def list_rules(self):
         return self.get(self.rules_url)

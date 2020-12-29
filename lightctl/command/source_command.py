@@ -34,6 +34,20 @@ def delete(context_obj, id):
 
 
 @source.command()
+@click.argument("id")
+@click.pass_obj
+def clone(context_obj, id):
+    res = source_client.get_source(id)
+    if not res:
+        context_obj.printer.print({"error": "not found"})
+
+    res["metadata"].pop("uuid")
+    res["metadata"]["name"] += "_Clone"
+    res = source_client.create_source(res)
+    context_obj.printer.print(res)
+
+
+@source.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def create(context_obj, file):

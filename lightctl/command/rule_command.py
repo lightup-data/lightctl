@@ -34,6 +34,20 @@ def delete(context_obj, id):
 
 
 @rule.command()
+@click.argument("id")
+@click.pass_obj
+def clone(context_obj, id):
+    res = rule_client.get_rule(id)
+    if not res:
+        context_obj.printer.print({"error": "not found"})
+
+    res["metadata"].pop("uuid")
+    res["metadata"]["name"] += "_Clone"
+    res = rule_client.create_rule(res)
+    context_obj.printer.print(res)
+
+
+@rule.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def create(context_obj, file):

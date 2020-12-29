@@ -34,6 +34,20 @@ def delete(context_obj, id):
 
 
 @metric.command()
+@click.argument("id")
+@click.pass_obj
+def clone(context_obj, id):
+    res = metric_client.get_metric(id)
+    if not res:
+        context_obj.printer.print({"error": "not found"})
+
+    res["metadata"].pop("uuid")
+    res["metadata"]["name"] += "_Clone"
+    res = metric_client.create_metric(res)
+    context_obj.printer.print(res)
+
+
+@metric.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def create(context_obj, file):

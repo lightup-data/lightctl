@@ -3,67 +3,79 @@ import functools
 import json
 import logging
 import os.path
-import urllib.parse
-from typing import Dict
+import urllib
+from pathlib import Path
+from typing import Dict, Optional
 
 import requests
 
-from lightctl.config import PASSWORD, URL_BASE, USERNAME
+from lightctl.config import URL_BASE
 from lightctl.util import check_status_code
 
 logger = logging.getLogger(__name__)
+true = True
+credential = {
+    "user": {"username": "Yiqian Zhou", "email": "yiqian@lightup.ai"},
+    "jti": "c1b111121e154eddbfe6221d51533384",
+    "created": "2021-01-06 23:50:23.120167+00:00",
+    "expired": "2021-01-07 23:50:23+00:00",
+    "active": true,
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjA5OTc3MzIzLCJqdGkiOiI2NTJlNjVjNDk3ODE0MjcyODM0ZTQwYzEwNDUyMTBkZSIsInVzZXJfaWQiOjN9.dEZ9ix0KgoB6lxg9ltkbPKBgjNAgCiQBw6pBj4bvWM0",
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxMDA2MzQyMywianRpIjoiYzFiMTExMTIxZTE1NGVkZGJmZTYyMjFkNTE1MzMzODQiLCJ1c2VyX2lkIjozfQ.DkaQstsOeOXh5p38LIgLjWeZ3fBzcnHZtlNv7T78C8Y",
+}
+
+c2 = {
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxMDA2MzU1NiwianRpIjoiYWU2OGM2M2FmNmQ1NDlkNTgwOTg5YWM2MGJlYjY0NjEiLCJ1c2VyX2lkIjoxfQ.RpsWmwhwj-jN6KYzzAxdECzc1IG5L8tJ3dOm1DbmPD8",
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjA5OTc3NDU2LCJqdGkiOiJiNjNjZGFlNjhlYzA0NjU1Yjg4ZmRiOTdlYWVhOGE2YiIsInVzZXJfaWQiOjF9.y2GOiVY_U0jMz1nDrqOff561tR2IiU_Fb2ufyV4Jf90",
+}
 
 
-def _logged_in(func):
+def refresh_token_if_needed(func):
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        self.login_if_needed()
-        return func(self, *args, **kwargs)
+        res = func(self, *args, **kwargs)
+        if res.status_code == 401 and res.json().get("code") == "token_not_valid":
+            self._refresh_access_token()
+            res = func(self, *args, **kwargs)
+        return res
 
     return wrapper
 
 
 class BaseClient:
     CSRF_TOKEN_KEY = "csrftoken"
+    credential_file_path = os.path.join(str(Path.home()), ".lightup", "cli-credential")
+    cached_access_token_file_path = os.path.join(
+        str(Path.home()), ".lightup", "cached-cli-access-token"
+    )
 
     def __init__(self):
-        self.client = requests.session()
+        with open(self.credential_file_path) as f:
+            self.credential = json.load(f)
+            self.refresh_token = self.credential["refresh"]
+
+        # self.access_token: Optional[str] = self._get_cached_access_token()
+        self.access_token = c2["access"]
+
+        if not self.access_token:
+            self._refresh_access_token()
+
         self.url_base = URL_BASE
-        self._logged_in = False
 
-    @property
-    def log_url(self):
-        return urllib.parse.urljoin(self.url_base, "api/v0/users/login-basic-auth/")
+        self.client = requests.session()
 
-    def login_if_needed(self):
-        for cookie in self.client.cookies:
-            if cookie.is_expired():
-                self._logged_in = False
+    @refresh_token_if_needed
+    def _get(self, *args, **kwargs):
+        # kwargs["headers"].update({"Authorization": f"Bearer {self.access_token}"})
+        kwargs["headers"] = {"Authorization": f"Bearer {self.access_token}"}
+        return requests.get(*args, **kwargs)
 
-        if self._logged_in:
-            return
-
-        # TODO: CSRF token for login
-        login_data = {
-            "auth_info": {"type": "basic", "username": USERNAME, "password": PASSWORD}
-        }
-        res = self.client.post(
-            self.log_url, json=login_data, headers=dict(Referer=self.log_url)
-        )
-        if res.status_code == 200:
-            self._logged_in = True
-            return
-
-        logger.warning(f"login failed {res.text}")
-        self._logged_in = False
-
-    @_logged_in
     def get(self, endpoint) -> Dict:
-        r = self.client.get(endpoint)
+        headers = {"Authorization": f"Bearer {self.access_token}"}
+        r = self._get(endpoint, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)
 
-    @_logged_in
     def post(self, endpoint, data: Dict, expected_status=201):
         headers = self._prepare_post_put_headers()
         data = json.dumps(data, default=_json_serial)
@@ -71,7 +83,6 @@ class BaseClient:
         check_status_code(r, expected_status)
         return json.loads(r.text)
 
-    @_logged_in
     def delete(self, endpoint, id):
         assert self.CSRF_TOKEN_KEY in self.client.cookies
         csrf_token = self.client.cookies[self.CSRF_TOKEN_KEY]
@@ -81,7 +92,6 @@ class BaseClient:
         check_status_code(r, 204)
         return {"id": id}
 
-    @_logged_in
     def put(self, endpoint, id, data: Dict):
         headers = self._prepare_post_put_headers()
         data = json.dumps(data, default=_json_serial)
@@ -98,6 +108,23 @@ class BaseClient:
             "Accept": "text/plain, application/json",
         }
         return headers
+
+    def _get_cached_access_token(self) -> Optional[str]:
+        if not Path(self.cached_access_token_file_path).exists():
+            return None
+        with open(self.cached_access_token_file_path, "r") as f:
+            return f.read()
+
+    def _set_cached_access_token(self, token: str):
+        with open(self.cached_access_token_file_path, "w") as f:
+            return f.write(token)
+
+    def _refresh_access_token(self):
+        endpoint = urllib.parse.urljoin(self.url_base, "/api/token/refresh/")
+        data = {"refresh": self.refresh_token}
+        res = requests.post(endpoint, json=data)
+        self.access_token = res.json()["access"]
+        self._set_cached_access_token(self.access_token)
 
 
 def _json_serial(obj):

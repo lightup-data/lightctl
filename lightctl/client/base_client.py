@@ -9,7 +9,7 @@ from typing import Dict, Optional
 
 import requests
 
-from lightctl.config import URL_BASE
+from lightctl.config import ACCESS_TOKEN_CACHE_FILE_PATH, CREDENTIAL_FILE_PATH, URL_BASE
 from lightctl.util import check_status_code
 
 logger = logging.getLogger(__name__)
@@ -28,14 +28,8 @@ def refresh_token_if_needed(func):
 
 
 class BaseClient:
-    credential_file_path = os.path.join(str(Path.home()), ".lightup", "cli-credential")
-    cached_access_token_file_path = os.path.join(
-        str(Path.home()), ".lightup", "cached-cli-access-token"
-    )
-    url_base = URL_BASE
-
     def __init__(self):
-        with open(self.credential_file_path) as f:
+        with open(CREDENTIAL_FILE_PATH) as f:
             self.credential = json.load(f)
             self.refresh_token = self.credential["refresh"]
 
@@ -43,8 +37,6 @@ class BaseClient:
 
         if not self.access_token:
             self._refresh_access_token()
-
-        # self.client = requests.session()
 
     def get(self, endpoint) -> Dict:
         r = self._get(endpoint)
@@ -58,19 +50,12 @@ class BaseClient:
         return json.loads(r.text)
 
     def delete(self, endpoint, id):
-        # csrf_token = self.client.cookies[self.CSRF_TOKEN_KEY]
-        # r = self._auth_delete(
-        #     os.path.join(endpoint, str(id)), headers={"X-CSRFTOKEN": csrf_token}
-        # )
         r = self._delete(os.path.join(endpoint, str(id)))
-
         check_status_code(r, 204)
         return {"id": id}
 
     def put(self, endpoint, id, data: Dict):
         data = json.dumps(data, default=_json_serial)
-        # headers = self._prepare_post_put_headers()
-        # r = self._put(os.path.join(endpoint, str(id)), data=data, headers=headers)
         r = self._put(os.path.join(endpoint, str(id)), data=data)
         check_status_code(r, 200)
         return json.loads(r.text)
@@ -99,18 +84,8 @@ class BaseClient:
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.put(*args, **kwargs, headers=headers)
 
-    # def _prepare_post_put_headers(self):
-    #     assert self.CSRF_TOKEN_KEY in self.client.cookies
-    #     csrf_token = self.client.cookies[self.CSRF_TOKEN_KEY]
-    #     headers = {
-    #         "X-CSRFTOKEN": csrf_token,
-    #         "Content-type": "application/json",
-    #         "Accept": "text/plain, application/json",
-    #     }
-    #     return headers
-
     def _refresh_access_token(self):
-        endpoint = urllib.parse.urljoin(self.url_base, "/api/token/refresh/")
+        endpoint = urllib.parse.urljoin(URL_BASE, "/api/token/refresh/")
         data = {"refresh": self.refresh_token}
         res = requests.post(endpoint, json=data)
         check_status_code(res, 200)
@@ -119,14 +94,16 @@ class BaseClient:
         self._set_cached_access_token(self.access_token)
         logger.debug("access token cached")
 
-    def _get_cached_access_token(self) -> Optional[str]:
-        if not Path(self.cached_access_token_file_path).exists():
+    @staticmethod
+    def _get_cached_access_token() -> Optional[str]:
+        if not Path(ACCESS_TOKEN_CACHE_FILE_PATH).exists():
             return None
-        with open(self.cached_access_token_file_path, "r") as f:
+        with open(ACCESS_TOKEN_CACHE_FILE_PATH, "r") as f:
             return f.read()
 
-    def _set_cached_access_token(self, token: str):
-        with open(self.cached_access_token_file_path, "w") as f:
+    @staticmethod
+    def _set_cached_access_token(token: str):
+        with open(ACCESS_TOKEN_CACHE_FILE_PATH, "w") as f:
             return f.write(token)
 
 

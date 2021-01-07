@@ -16,7 +16,6 @@ from lightctl.util import CliPrinter, FileLoader
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 
-# TODO: [prod] clean up help message
 help_message = """ You can override default setting by setting following environment variable
 LIGHTUP_URL_BASE
 

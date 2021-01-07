@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
 
-__version__ = "v1"
+__version__ = "0.1.0"
+
+API_VERSION = "v1"
 
 URL_BASE = os.environ.get("LIGHTUP_URL_BASE", "https://app.stage.lightup.ai")
 

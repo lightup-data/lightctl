@@ -28,7 +28,6 @@ def refresh_token_if_needed(func):
 
 
 class BaseClient:
-    CSRF_TOKEN_KEY = "csrftoken"
     credential_file_path = os.path.join(str(Path.home()), ".lightup", "cli-credential")
     cached_access_token_file_path = os.path.join(
         str(Path.home()), ".lightup", "cached-cli-access-token"

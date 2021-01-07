@@ -5,10 +5,11 @@ __version__ = "0.1.0"
 
 API_VERSION = "v1"
 
-URL_BASE = os.environ.get("LIGHTUP_URL_BASE", "https://app.stage.lightup.ai")
-
 ACCESS_TOKEN_CACHE_FILE_PATH = os.path.join(
-    str(Path.home()), ".lightup", "cached-cli-access-token"
+    str(Path.home()), ".lightup", "access-token-cache"
 )
 
-CREDENTIAL_FILE_PATH = os.path.join(str(Path.home()), ".lightup", "cli-credential")
+CREDENTIAL_FILE_PATH = os.environ.get(
+    "LIGHTUP_API_CREDENTIAL",
+    os.path.join(str(Path.home()), ".lightup", "api-credential"),
+)

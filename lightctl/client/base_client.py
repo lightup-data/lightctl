@@ -9,7 +9,7 @@ from typing import Dict, Optional
 
 import requests
 
-from lightctl.config import ACCESS_TOKEN_CACHE_FILE_PATH, CREDENTIAL_FILE_PATH, URL_BASE
+from lightctl.config import ACCESS_TOKEN_CACHE_FILE_PATH, CREDENTIAL_FILE_PATH
 from lightctl.util import check_status_code
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,9 @@ logger = logging.getLogger(__name__)
 def refresh_token_if_needed(func):
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
+        if not self.access_token:
+            self._refresh_access_token()
+
         res = func(self, *args, **kwargs)
         if res.status_code == 401 and res.json().get("code") == "token_not_valid":
             self._refresh_access_token()
@@ -32,11 +35,9 @@ class BaseClient:
         with open(CREDENTIAL_FILE_PATH) as f:
             self.credential = json.load(f)
             self.refresh_token = self.credential["refresh"]
+            self.url_base = self.credential["server"]
 
         self.access_token: Optional[str] = self._get_cached_access_token()
-
-        if not self.access_token:
-            self._refresh_access_token()
 
     def get(self, endpoint) -> Dict:
         r = self._get(endpoint)
@@ -85,7 +86,7 @@ class BaseClient:
         return requests.put(*args, **kwargs, headers=headers)
 
     def _refresh_access_token(self):
-        endpoint = urllib.parse.urljoin(URL_BASE, "/api/token/refresh/")
+        endpoint = urllib.parse.urljoin(self.url_base, "/api/token/refresh/")
         data = {"refresh": self.refresh_token}
         res = requests.post(endpoint, json=data)
         check_status_code(res, 200)

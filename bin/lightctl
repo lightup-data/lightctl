@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import sys
 
 import click
 
@@ -16,14 +17,15 @@ from lightctl.util import CliPrinter, FileLoader
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 
-help_message = """ You can override default setting by setting following environment variable
-LIGHTUP_URL_BASE
+help_message = """
+lightctl needs credential file, whose path can be configured via LIGHTUP_API_CREDENTIAL.
+Default is  ~/.lightup/api-credentials)
 
 Examples:\n
-$ python3 ./lightctl rule list\n
-$ python3 ./lightctl rule get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+$ ./lightctl rule list\n
+$ ./lightctl rule get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
 
-$ LIGHTUP_URL_BASE=https://app.demo.lightup.ai python3 ./lightctl rule list\n
+$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential ./lightctl rule list\n
 """
 
 
@@ -37,15 +39,30 @@ def cli(ctx, debug, json):
         file_loader=FileLoader(use_json_format=json),
     )
     if debug:
-        logging.basicConfig(level=logging.DEBUG)
+        setup_loggers([logging.getLogger("lightctl")], level=logging.DEBUG)
     else:
-        logging.basicConfig(level=logging.INFO)
+        setup_loggers([logging.getLogger("lightctl")], level=logging.INFO)
 
 
 cli.add_command(version_command.version)
 cli.add_command(source_command.source)
 cli.add_command(metric_command.metric)
 cli.add_command(rule_command.rule)
+
+
+def setup_loggers(loggers, level=logging.INFO):
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setLevel(level)
+
+    handler.setFormatter(formatter)
+
+    for logger in loggers:
+        logger.setLevel(level)
+        logger.addHandler(handler)
 
 
 if __name__ == "__main__":

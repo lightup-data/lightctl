@@ -13,7 +13,8 @@ class RuleClient(BaseClient):
         return urllib.parse.urljoin(self.url_base, f"/api/{API_VERSION}/rules/")
 
     def list_rules(self):
-        return self.get(self.rules_url)
+        res = self.get(self.rules_url)
+        return res.get("data", [])
 
     def get_rule(self, id: str):
         url = urllib.parse.urljoin(self.rules_url, id)

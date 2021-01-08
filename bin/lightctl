@@ -19,7 +19,7 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 help_message = """
 lightctl needs credential file, whose path can be configured via LIGHTUP_API_CREDENTIAL.
-Default is  ~/.lightup/api-credentials
+Default is  ~/.lightup/credential
 
 Examples:\n
 $ ./lightctl rule list\n

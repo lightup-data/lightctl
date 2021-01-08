@@ -9,7 +9,11 @@ from typing import Dict, Optional
 
 import requests
 
-from lightctl.config import ACCESS_TOKEN_CACHE_FILE_PATH, CREDENTIAL_FILE_PATH
+from lightctl.config import (
+    ACCESS_TOKEN_CACHE_FILE_PATH,
+    API_VERSION,
+    CREDENTIAL_FILE_PATH,
+)
 from lightctl.util import check_status_code
 
 logger = logging.getLogger(__name__)
@@ -34,8 +38,8 @@ class BaseClient:
     def __init__(self):
         with open(CREDENTIAL_FILE_PATH) as f:
             self.credential = json.load(f)
-            self.refresh_token = self.credential["refresh"]
-            self.url_base = self.credential["server"]
+            self.refresh_token = self.credential["data"]["refresh"]
+            self.url_base = self.credential["data"]["server"]
 
         self.access_token: Optional[str] = self._get_cached_access_token()
 
@@ -86,7 +90,9 @@ class BaseClient:
         return requests.put(*args, **kwargs, headers=headers)
 
     def _refresh_access_token(self):
-        endpoint = urllib.parse.urljoin(self.url_base, "/api/token/refresh/")
+        endpoint = urllib.parse.urljoin(
+            self.url_base, f"/api/{API_VERSION}/token/refresh/"
+        )
         data = {"refresh": self.refresh_token}
         res = requests.post(endpoint, json=data)
         check_status_code(res, 200)

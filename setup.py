@@ -19,7 +19,8 @@ setup(
     license="Proprietary License",
     author="Lightup Data Inc",
     author_email="info@lightup.ai",
-    packages=find_namespace_packages(include=["lightctl.*"]),
+    packages=find_namespace_packages(include=["lightctl"]),
+    scripts=["bin/lightctl"],
     install_requires=[
         "click>=7.0",
         "pyyaml>=5.3.1",

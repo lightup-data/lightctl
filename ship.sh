@@ -15,4 +15,4 @@ printf "To install, use \n"
 printf "pip install lightctl --find-links https://s3-us-west-2.amazonaws.com/%s/%s/lightctl/index.html\n" ${BUCKET} ${SECRET}
 
 printf "Uploading package... \n"
-s3pypi --bucket ${BUCKET} --secret ${SECRET} --private
+s3pypi --private --bucket ${BUCKET} --secret ${SECRET} "$@"

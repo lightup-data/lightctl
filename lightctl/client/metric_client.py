@@ -2,6 +2,7 @@ import logging
 import urllib.parse
 
 from lightctl.client.base_client import BaseClient
+from lightctl.config import API_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +10,7 @@ logger = logging.getLogger(__name__)
 class MetricClient(BaseClient):
     @property
     def metrics_url(self):
-        return urllib.parse.urljoin(self.url_base, "/api/v1/streams/")
+        return urllib.parse.urljoin(self.url_base, f"/api/{API_VERSION}/metrics/")
 
     def list_metrics(self):
         return self.get(self.metrics_url)

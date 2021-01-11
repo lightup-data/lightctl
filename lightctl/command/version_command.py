@@ -2,7 +2,8 @@ import click
 
 from lightctl.client.healthz_client import HealthzClient
 from lightctl.command.common import ContextObject
-from lightctl.config import API_VERSION, __version__
+from lightctl.config import API_VERSION
+from lightctl.version import __version__
 
 healthz_client = HealthzClient()
 

@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-__version__ = "0.1.0"
-
 API_VERSION = "v1"
 
 ACCESS_TOKEN_CACHE_FILE_PATH = os.path.join(

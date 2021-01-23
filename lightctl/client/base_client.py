@@ -50,7 +50,10 @@ class BaseClient:
 
     def post(self, endpoint, data: Dict, expected_status=201):
         data = json.dumps(data, default=_json_serial)
-        r = self._post(endpoint, data=data)
+        headers = {
+            "Content-type": "application/json",
+        }
+        r = self._post(endpoint, data=data, headers=headers)
         check_status_code(r, expected_status)
         return json.loads(r.text)
 
@@ -61,31 +64,34 @@ class BaseClient:
 
     def put(self, endpoint, id, data: Dict):
         data = json.dumps(data, default=_json_serial)
-        r = self._put(os.path.join(endpoint, str(id)), data=data)
+        headers = {
+            "Content-type": "application/json",
+        }
+        r = self._put(os.path.join(endpoint, str(id)), data=data, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)
 
     @refresh_token_if_needed
     def _get(self, *args, **kwargs):
-        headers = kwargs.get("headers", {})
+        headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.get(*args, **kwargs, headers=headers)
 
     @refresh_token_if_needed
     def _post(self, *args, **kwargs):
-        headers = kwargs.get("headers", {})
+        headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.post(*args, **kwargs, headers=headers)
 
     @refresh_token_if_needed
     def _delete(self, *args, **kwargs):
-        headers = kwargs.get("headers", {})
+        headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.delete(*args, **kwargs, headers=headers)
 
     @refresh_token_if_needed
     def _put(self, *args, **kwargs):
-        headers = kwargs.get("headers", {})
+        headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.put(*args, **kwargs, headers=headers)
 

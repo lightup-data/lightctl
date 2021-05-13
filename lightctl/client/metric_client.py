@@ -23,7 +23,7 @@ class MetricClient(BaseClient):
     def get_metric_by_name(self, name):
         metrics = self.list_metrics()
         for metric in metrics:
-            if metric["name"] == name:
+            if metric["metadata"]["name"] == name:
                 return metric
         return None
 

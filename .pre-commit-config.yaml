@@ -10,13 +10,13 @@ repos:
     rev: 5.1.4
     hooks:
       - id: isort
-        language_version: python3.7
+        language_version: python3.8
         args: [--multi-line=3,--trailing-comma,--force-grid-wrap=0,--use-parentheses,--line-length=88,--ensure-newline-before-comments]
   - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
       - id: black
-        language_version: python3.7
+        language_version: python3.8
 
   - repo: git@github.com:humitos/mirrors-autoflake.git
     rev: v1.3

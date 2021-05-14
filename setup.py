@@ -19,7 +19,7 @@ setup(
     license="Proprietary License",
     author="Lightup Data Inc",
     author_email="support@lightup.ai",
-    packages=find_packages(include=["lightctl"]),
+    packages=find_packages(include=["lightctl", "lightctl.*"]),
     scripts=["bin/lightctl"],
     install_requires=[
         "click>=7.0",

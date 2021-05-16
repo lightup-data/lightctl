@@ -14,7 +14,7 @@ pip3 install pre-commit
 pre-commit install
 
 # set python dev env
-python3 -m venv lightctl-venv
-source lightctl-venv/bin/activate
+python3 -m venv .lightctl-venv
+source .lightctl-venv/bin/activate
 pip3 install -r requirements.txt
 export PYTHONPATH=$(pwd):$PYTHONPATH

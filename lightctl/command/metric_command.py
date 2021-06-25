@@ -57,6 +57,16 @@ def create(context_obj, file):
 
 
 @metric.command()
+@click.argument("id")
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def update(context_obj, id, file):
+    data = context_obj.file_loader.load(file)
+    res = metric_client.update_metric(id, data)
+    context_obj.printer.print(res)
+
+
+@metric.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def inspect_schema(context_obj, file):

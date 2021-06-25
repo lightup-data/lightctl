@@ -57,6 +57,16 @@ def create(context_obj, file):
 
 
 @source.command()
+@click.argument("id")
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def update(context_obj, id, file):
+    data = context_obj.file_loader.load(file)
+    res = source_client.update_source(id, data)
+    context_obj.printer.print(res)
+
+
+@source.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def inspect(context_obj, file):

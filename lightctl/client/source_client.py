@@ -29,6 +29,9 @@ class SourceClient(BaseClient):
     def create_source(self, data):
         return self.post(self.sources_url, data)
 
+    def update_source(self, id, data):
+        return self.put(self.sources_url, id, data)
+
     def delete_source(self, id):
         self.delete(self.sources_url, id)
 

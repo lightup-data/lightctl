@@ -32,6 +32,9 @@ class RuleClient(BaseClient):
     def create_rule(self, data):
         return self.post(self.rules_url, data)
 
+    def update_rule(self, id, data):
+        return self.put(self.rules_url, id, data)
+
     def delete_rule(self, id):
         self.delete(self.rules_url, id)
 

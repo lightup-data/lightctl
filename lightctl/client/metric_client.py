@@ -30,6 +30,9 @@ class MetricClient(BaseClient):
     def create_metric(self, data):
         return self.post(self.metrics_url, data)
 
+    def update_metric(self, id, data):
+        return self.put(self.metrics_url, id, data)
+
     def delete_metric(self, id):
         self.delete(self.metrics_url, id)
 

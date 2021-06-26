@@ -54,3 +54,13 @@ def create(context_obj, file):
     data = context_obj.file_loader.load(file)
     res = rule_client.create_rule(data)
     context_obj.printer.print(res)
+
+
+@rule.command()
+@click.argument("id")
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def update(context_obj, id, file):
+    data = context_obj.file_loader.load(file)
+    res = rule_client.update_rule(id, data)
+    context_obj.printer.print(res)

@@ -8,6 +8,7 @@ __pycache__/
 
 # dev virtual env
 lightctl-venv/
+.lightctl-venv/
 
 # Distribution / packaging
 .Python

@@ -19,5 +19,8 @@ class IncidentClient(BaseClient):
         assert end_ts is not None
         assert start_ts < end_ts
 
-        url = self.incident_url + f"?{start_ts=}&{end_ts=}&filter_uuids={rule_id}"
+        url = (
+            self.incident_url
+            + f"?start_ts={start_ts}&end_ts={end_ts}&filter_uuids={rule_id}"
+        )
         return self.get(url).get("data")

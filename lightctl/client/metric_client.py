@@ -31,7 +31,8 @@ class MetricClient(BaseClient):
         return self.post(self.metrics_url, data)
 
     def update_metric(self, id, data):
-        return self.put(self.metrics_url, id, data)
+        url = urllib.parse.urljoin(self.metrics_url, id)
+        return self.put(url, data)
 
     def delete_metric(self, id):
         self.delete(self.metrics_url, id)

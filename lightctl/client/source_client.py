@@ -30,7 +30,8 @@ class SourceClient(BaseClient):
         return self.post(self.sources_url, data)
 
     def update_source(self, id, data):
-        return self.put(self.sources_url, id, data)
+        url = urllib.parse.urljoin(self.sources_url, id)
+        return self.put(url, id, data)
 
     def delete_source(self, id):
         self.delete(self.sources_url, id)
@@ -43,9 +44,10 @@ class SourceClient(BaseClient):
 
     def list_tables(self, id):
         url = urllib.parse.urljoin(
-            self.url_base, f"/api/{API_VERSION}/sources/{id}/tables"
+            self.url_base, f"/api/{API_VERSION}/sources/{id}/profile/tables"
         )
-        return self.get(url)
+        tables = self.get(url)
+        return tables
 
     def get_schema(self, id, table_name):
         url = urllib.parse.urljoin(
@@ -53,3 +55,10 @@ class SourceClient(BaseClient):
             f"/api/{API_VERSION}sources/{id}/schema?table_name={table_name}",
         )
         return self.get(url)
+
+    def update_profiler_config(self, id, table_uuid, data):
+        url = urllib.parse.urljoin(
+            self.url_base,
+            f"/api/{API_VERSION}/sources/{id}/profile/tables/{table_uuid}/profiler-config",
+        )
+        return self.put(url, data)

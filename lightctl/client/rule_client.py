@@ -19,7 +19,8 @@ class RuleClient(BaseClient):
 
     def get_rule(self, id: str):
         url = urllib.parse.urljoin(self.rules_url, id)
-        return self.get(url)
+        rule = self.get(url)
+        return rule
 
     # TODO: [v1] support query in backend
     def get_rule_by_name(self, name):
@@ -35,8 +36,8 @@ class RuleClient(BaseClient):
         return self.post(self.rules_url, data)
 
     def update_rule(self, id, data):
-        assert id == data["metadata"]["uuid"]
-        return self.put(self.rules_url, id, data)
+        urllib.parse.urljoin(self.rules_url, id)
+        return self.put(self.rules_url, data)
 
     def delete_rule(self, id):
         self.delete(self.rules_url, id)

@@ -31,7 +31,7 @@ class SourceClient(BaseClient):
 
     def update_source(self, id, data):
         url = urllib.parse.urljoin(self.sources_url, id)
-        return self.put(url, id, data)
+        return self.put(url, data)
 
     def delete_source(self, id):
         self.delete(self.sources_url, id)

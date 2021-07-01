@@ -19,21 +19,25 @@ class RuleClient(BaseClient):
 
     def get_rule(self, id: str):
         url = urllib.parse.urljoin(self.rules_url, id)
-        return self.get(url)
+        rule = self.get(url)
+        return rule
 
     # TODO: [v1] support query in backend
     def get_rule_by_name(self, name):
+        # name is not unique
+        rule_list = []
         rules = self.list_rules()
         for rule in rules:
             if rule["name"] == name:
-                return rule
-        return None
+                rule_list.append(rule)
+        return rule_list
 
     def create_rule(self, data):
         return self.post(self.rules_url, data)
 
     def update_rule(self, id, data):
-        return self.put(self.rules_url, id, data)
+        urllib.parse.urljoin(self.rules_url, id)
+        return self.put(self.rules_url, data)
 
     def delete_rule(self, id):
         self.delete(self.rules_url, id)

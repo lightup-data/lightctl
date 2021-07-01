@@ -62,12 +62,12 @@ class BaseClient:
         check_status_code(r, 204)
         return {"id": id}
 
-    def put(self, endpoint, id, data: Dict):
+    def put(self, endpoint: str, data: Dict):
         data = json.dumps(data, default=_json_serial)
         headers = {
             "Content-type": "application/json",
         }
-        r = self._put(os.path.join(endpoint, str(id)), data=data, headers=headers)
+        r = self._put(endpoint, data=data, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)
 

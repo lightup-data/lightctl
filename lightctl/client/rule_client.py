@@ -36,8 +36,8 @@ class RuleClient(BaseClient):
         return self.post(self.rules_url, data)
 
     def update_rule(self, id, data):
-        urllib.parse.urljoin(self.rules_url, id)
-        return self.put(self.rules_url, data)
+        url = urllib.parse.urljoin(self.rules_url, id)
+        return self.put(url, data)
 
     def delete_rule(self, id):
         self.delete(self.rules_url, id)

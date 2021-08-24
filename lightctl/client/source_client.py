@@ -62,3 +62,9 @@ class SourceClient(BaseClient):
             f"/api/{API_VERSION}/sources/{id}/profile/tables/{table_uuid}/profiler-config",
         )
         return self.put(url, data)
+
+    def trigger_source(self, id):
+        url = urllib.parse.join(
+            self.url_base, f"/api/{API_VERSION}/sources/{id}/trigger"
+        )
+        return self.put(url)

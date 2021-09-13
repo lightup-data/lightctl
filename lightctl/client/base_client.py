@@ -57,16 +57,23 @@ class BaseClient:
         check_status_code(r, expected_status)
         return json.loads(r.text)
 
-    def delete(self, endpoint, id):
-        r = self._delete(os.path.join(endpoint, str(id)))
-        check_status_code(r, 204)
-        return {"id": id}
-
-    def put(self, endpoint: str, data: Dict):
-        data = json.dumps(data, default=_json_serial)
+    def delete(self, endpoint: str, id: str, force: bool = False):
         headers = {
             "Content-type": "application/json",
         }
+        if force:
+            headers = {"X-Lup-Action-Type": "force"}
+
+        r = self._delete(os.path.join(endpoint, str(id)), headers=headers)
+        check_status_code(r, 204)
+        return {"id": id}
+
+    def put(self, endpoint: str, data: Dict, force: bool = False):
+        data = json.dumps(data, default=_json_serial)
+        headers = {"Content-type": "application/json"}
+        if force:
+            headers["X-Lup-Action-Type"] = "force"
+
         r = self._put(endpoint, data=data, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)

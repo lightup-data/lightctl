@@ -30,12 +30,12 @@ class MetricClient(BaseClient):
     def create_metric(self, data):
         return self.post(self.metrics_url, data)
 
-    def update_metric(self, id, data):
+    def update_metric(self, id, data, force=False):
         url = urllib.parse.urljoin(self.metrics_url, id)
-        return self.put(url, data)
+        return self.put(url, data, force=force)
 
-    def delete_metric(self, id):
-        self.delete(self.metrics_url, id)
+    def delete_metric(self, id, force=False):
+        self.delete(self.metrics_url, id, force=force)
 
     # TODO: [prod] better naming for "inspect-*" sub command
     def inspect_schema(self, data):

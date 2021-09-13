@@ -62,7 +62,7 @@ class BaseClient:
             "Content-type": "application/json",
         }
         if force:
-            headers = {"X-Lup-Action-Type": "force"}
+            headers["X-Lup-Action-Type"] = "force"
 
         r = self._delete(os.path.join(endpoint, str(id)), headers=headers)
         check_status_code(r, 204)

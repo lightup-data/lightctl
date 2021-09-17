@@ -40,10 +40,23 @@ def clone(context_obj, id):
     res = source_client.get_source(id)
     if not res:
         context_obj.printer.print({"error": "not found"})
+        return
 
     res["metadata"].pop("uuid")
     res["metadata"]["name"] += "_Clone"
     res = source_client.create_source(res)
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id")
+@click.pass_obj
+def trigger(context_obj, id):
+    res = source_client.get_source(id)
+    if not res:
+        context_obj.printer.print({"error": "not found"})
+        return
+    res = source_client.trigger_source(id)
     context_obj.printer.print(res)
 
 

@@ -64,7 +64,11 @@ class SourceClient(BaseClient):
         return self.put(url, data)
 
     def trigger_source(self, id):
-        url = urllib.parse.join(
+        source = self.get_source(id)
+        if not source["config"].get("triggered", {}).get("enabled"):
+            return {"error": "source is not configured for triggers"}
+
+        url = urllib.parse.urljoin(
             self.url_base, f"/api/{API_VERSION}/sources/{id}/trigger"
         )
-        return self.put(url)
+        return self.put(url, data={})

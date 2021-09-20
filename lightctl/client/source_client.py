@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from lightctl.client.base_client import BaseClient
 from lightctl.config import API_VERSION
@@ -20,7 +20,7 @@ class SourceClient(BaseClient):
         url = urllib.parse.urljoin(self.sources_url, id)
         return self.get(url)
 
-    def get_source_by_name(self, name: str) -> Dict:
+    def get_source_by_name(self, name: str) -> Optional[Dict]:
         sources = self.list_sources()
         for source in sources:
             if source["name"] == name:

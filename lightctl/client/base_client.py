@@ -52,12 +52,12 @@ class BaseClient:
 
         self.access_token: Optional[str] = self._get_cached_access_token()
 
-    def get(self, endpoint) -> Dict:
+    def get(self, endpoint: str) -> Dict:
         r = self._get(endpoint)
         check_status_code(r, 200)
         return json.loads(r.text)
 
-    def post(self, endpoint, data: Dict, expected_status=201):
+    def post(self, endpoint: str, data: Dict, expected_status: int = 201) -> Dict:
         data = json.dumps(data, default=_json_serial)
         headers = get_headers()
         r = self._post(endpoint, data=data, headers=headers)

@@ -7,7 +7,9 @@ rule_client = RuleClient()
 
 @click.group()
 def rule():
-    pass
+    """
+    used by commands below
+    """
 
 
 @rule.command()

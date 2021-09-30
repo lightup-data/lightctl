@@ -6,6 +6,12 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
+class LightupException(Exception):
+    """
+    LightupException class
+    """
+
+
 class CliPrinter:
     def __init__(self, use_json_format=False):
         self._use_json_format = use_json_format
@@ -37,7 +43,7 @@ def check_status_code(r, expected=200):
             expected,
             r.text,
         )
-        raise Exception(
+        raise LightupException(
             "Status: {}. Expected Status: {}. Error Text: {}.".format(
                 r.status_code, expected, r.text
             )

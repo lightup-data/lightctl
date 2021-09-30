@@ -57,7 +57,7 @@ class BaseClient:
         check_status_code(r, 200)
         return json.loads(r.text)
 
-    def post(self, endpoint: str, data: Dict, expected_status=201) -> Dict:
+    def post(self, endpoint: str, data: Dict, expected_status: int = 201) -> Dict:
         data = json.dumps(data, default=_json_serial)
         headers = get_headers()
         r = self._post(endpoint, data=data, headers=headers)

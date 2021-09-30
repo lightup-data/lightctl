@@ -19,6 +19,15 @@ from lightctl.util import check_status_code
 logger = logging.getLogger(__name__)
 
 
+def get_headers(force: bool = False):
+    headers = {
+        "Content-type": "application/json",
+    }
+    if force:
+        headers["X-Lup-Action-Type"] = "force"
+    return headers
+
+
 def refresh_token_if_needed(func):
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
@@ -50,30 +59,20 @@ class BaseClient:
 
     def post(self, endpoint, data: Dict, expected_status=201):
         data = json.dumps(data, default=_json_serial)
-        headers = {
-            "Content-type": "application/json",
-        }
+        headers = get_headers()
         r = self._post(endpoint, data=data, headers=headers)
         check_status_code(r, expected_status)
         return json.loads(r.text)
 
     def delete(self, endpoint: str, id: str, force: bool = False):
-        headers = {
-            "Content-type": "application/json",
-        }
-        if force:
-            headers["X-Lup-Action-Type"] = "force"
-
+        headers = get_headers(force)
         r = self._delete(os.path.join(endpoint, str(id)), headers=headers)
         check_status_code(r, 204)
         return {"id": id}
 
     def put(self, endpoint: str, data: Dict, force: bool = False):
         data = json.dumps(data, default=_json_serial)
-        headers = {"Content-type": "application/json"}
-        if force:
-            headers["X-Lup-Action-Type"] = "force"
-
+        headers = get_headers(force)
         r = self._put(endpoint, data=data, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)

@@ -7,7 +7,9 @@ metric_client = MetricClient()
 
 @click.group()
 def metric():
-    pass
+    """
+    used by commands below
+    """
 
 
 @metric.command()

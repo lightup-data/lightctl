@@ -7,7 +7,9 @@ source_client = SourceClient()
 
 @click.group()
 def source():
-    pass
+    """
+    used by commands below
+    """
 
 
 @source.command()

@@ -27,11 +27,11 @@ class MetricClient(BaseClient):
     def create_metric(self, data: Dict) -> Dict:
         return self.post(self.metrics_url, data)
 
-    def update_metric(self, id: str, data: Dict, force=False) -> Dict:
+    def update_metric(self, id: str, data: Dict, force: bool = False) -> Dict:
         url = urllib.parse.urljoin(self.metrics_url, id)
         return self.put(url, data, force=force)
 
-    def delete_metric(self, id: str, force=False):
+    def delete_metric(self, id: str, force: bool = False):
         self.delete(self.metrics_url, id, force=force)
 
     def inspect_schema(self, data: Dict) -> Dict:

@@ -14,7 +14,7 @@ setup(
     name="lightctl",
     version=version["__version__"],
     description="Lightup CLI Tool",
-    long_description="""lightctl manages Source, Metric, Rule etc""",
+    long_description="""lightctl manages Sources, Metrics, Monitors and other Lightup objects""",
     url="https://www.lightup.ai/",
     license="Proprietary License",
     author="Lightup Data Inc",

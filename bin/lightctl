@@ -7,7 +7,7 @@ import click
 
 from lightctl.command import (
     metric_command,
-    rule_command,
+    monitor_command,
     source_command,
     version_command,
 )
@@ -22,10 +22,10 @@ lightctl needs credential file, whose path can be configured via LIGHTUP_API_CRE
 Default is  ~/.lightup/credential
 
 Examples:\n
-$ ./lightctl rule list\n
-$ ./lightctl rule get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+$ ./lightctl monitor list\n
+$ ./lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
 
-$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential ./lightctl rule list\n
+$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential ./lightctl monitor list\n
 """
 
 
@@ -47,7 +47,7 @@ def cli(ctx, debug, json):
 cli.add_command(version_command.version)
 cli.add_command(source_command.source)
 cli.add_command(metric_command.metric)
-cli.add_command(rule_command.rule)
+cli.add_command(monitor_command.monitor)
 
 
 def setup_loggers(loggers, level=logging.INFO):

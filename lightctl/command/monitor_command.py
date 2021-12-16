@@ -1,68 +1,68 @@
 import click
 
-from lightctl.client.rule_client import RuleClient
+from lightctl.client.monitor_client import MonitorClient
 
-rule_client = RuleClient()
+monitor_client = MonitorClient()
 
 
 @click.group()
-def rule():
+def monitor():
     """
     used by commands below
     """
 
 
-@rule.command()
+@monitor.command()
 @click.pass_obj
 def list(context_obj):
-    res = rule_client.list_rules()
+    res = monitor_client.list_monitors()
     context_obj.printer.print(res)
 
 
-@rule.command()
+@monitor.command()
 @click.argument("id")
 @click.pass_obj
 def get(context_obj, id):
-    res = rule_client.get_rule(id)
+    res = monitor_client.get_monitor(id)
     context_obj.printer.print(res)
 
 
-@rule.command()
+@monitor.command()
 @click.argument("id")
 @click.pass_obj
 def delete(context_obj, id):
-    res = rule_client.delete_rule(id)
+    res = monitor_client.delete_monitor(id)
     context_obj.printer.print(res)
 
 
-@rule.command()
+@monitor.command()
 @click.argument("id")
 @click.pass_obj
 def clone(context_obj, id):
-    res = rule_client.get_rule(id)
+    res = monitor_client.get_monitor(id)
     if not res:
         context_obj.printer.print({"error": "not found"})
 
     res["metadata"].pop("uuid")
     res["metadata"]["name"] += "_Clone"
-    res = rule_client.create_rule(res)
+    res = monitor_client.create_monitor(res)
     context_obj.printer.print(res)
 
 
-@rule.command()
+@monitor.command()
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def create(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = rule_client.create_rule(data)
+    res = monitor_client.create_monitor(data)
     context_obj.printer.print(res)
 
 
-@rule.command()
+@monitor.command()
 @click.argument("id")
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def update(context_obj, id, file):
     data = context_obj.file_loader.load(file)
-    res = rule_client.update_rule(id, data)
+    res = monitor_client.update_monitor(id, data)
     context_obj.printer.print(res)

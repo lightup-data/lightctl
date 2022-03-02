@@ -10,9 +10,7 @@ logger = logging.getLogger(__name__)
 class IncidentClient(BaseClient):
     @property
     def incident_url(self) -> str:
-        return urllib.parse.urljoin(
-            self.url_base, f"/api/v0/topologies/lightuplongrunworkend/incidents"
-        )
+        return urllib.parse.urljoin(self.url_base, f"/api/v0/incidents")
 
     def get_incidents(self, monitor_id: str, start_ts: int, end_ts: int) -> Dict:
         assert monitor_id is not None

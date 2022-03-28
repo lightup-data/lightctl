@@ -22,10 +22,10 @@ lightctl needs credential file, whose path can be configured via LIGHTUP_API_CRE
 Default is  ~/.lightup/credential
 
 Examples:\n
-$ ./lightctl monitor list\n
-$ ./lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+$ lightctl monitor list\n
+$ lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
 
-$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential ./lightctl monitor list\n
+$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential lightctl monitor list\n
 """
 
 

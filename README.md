@@ -2,6 +2,25 @@
 
 lightctl is Lightup's CLI tool.
 
+Install using pip:
+```
+pip install lightctl==0.7.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
+```
+
+Install from source:
+
+```
+python3 setup.py build
+python3 setup.py install
+```
+
+Verify with:
+
+```
+lightctl version
+lightctl --help
+```
+
 Usage:
 
 You can check the usage of lightctl using the following command: 

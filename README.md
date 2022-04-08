@@ -5,7 +5,7 @@ lightctl is Lightup's CLI tool.
 ## Installation
 
 <details>
-  <summary>[Optional] Setup virtual env</summary>
+  <summary>Setup virtual env (optional)</summary>
 
 We prefer that lightctl is installed in a virtual environment to isolate from other dependencies on the system:
 

@@ -17,13 +17,13 @@ source .lightctl/bin/activate
 </details>
 
 
-Install using pip:
+Install using pip (Preferred):
 ```
 pip install lightctl==0.7.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
 ```
 
 <details>
-  <summary>[If needed] Install from source</summary>
+  <summary>Install from source (if needed)</summary>
 
 In the very rare case where you would like to install it from source - you can run the following commands:
 ```

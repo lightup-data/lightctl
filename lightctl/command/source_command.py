@@ -15,7 +15,7 @@ def source():
 @source.command()
 @click.pass_obj
 def list(context_obj):
-    res = source_client.list_sources()
+    res = source_client.list_sources(context_obj.workspace_id)
     context_obj.printer.print(res)
 
 

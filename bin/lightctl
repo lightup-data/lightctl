@@ -16,27 +16,29 @@ from lightctl.util import CliPrinter, FileLoader
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
-
 help_message = """
 lightctl needs credential file, whose path can be configured via LIGHTUP_API_CREDENTIAL.
 Default is  ~/.lightup/credential
 
 Examples:\n
-$ lightctl monitor list\n
+$ lightctl --workspace 497d2c3e-2e24-47ec-b33a-dcf3999062a7 monitor list\n
 $ lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
 
 $ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential lightctl monitor list\n
 """
+BASE_WORKSPACE_UUID = "497d2c3e-2e24-47ec-b33a-dcf3999062a7"
 
 
 @click.group(context_settings=CONTEXT_SETTINGS, help=help_message)
 @click.option("--debug", default=False, is_flag=True)
 @click.option("--json", default=False, is_flag=True)
+@click.option("--workspace", default=BASE_WORKSPACE_UUID, type=str)
 @click.pass_context
-def cli(ctx, debug, json):
+def cli(ctx, debug, json, workspace):
     ctx.obj = ContextObject(
         printer=CliPrinter(use_json_format=json),
         file_loader=FileLoader(use_json_format=json),
+        workspace_id=workspace,
     )
     if debug:
         setup_loggers([logging.getLogger("lightctl")], level=logging.DEBUG)

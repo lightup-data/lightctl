@@ -20,7 +20,7 @@ def list(context_obj):
 
 
 @metric.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def get(context_obj, id):
     res = metric_client.get_metric(id)
@@ -96,7 +96,7 @@ def inspect_distinct_values(context_obj, file):
 
 
 @metric.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def get_schema(context_obj, id):
     res = metric_client.get_schema(id)

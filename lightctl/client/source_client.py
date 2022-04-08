@@ -39,7 +39,7 @@ class SourceClient(BaseClient):
 
     def inspect(self, data: Dict) -> Dict:
         url = urllib.parse.urljoin(
-            self.url_base, f"/api/{API_VERSION}/sources-inspection"
+            self.url_base, f"/api/{API_VERSION}/sources/inspection"
         )
         return self.post(url, data, expected_status=200)
 

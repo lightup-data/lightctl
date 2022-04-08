@@ -1,9 +1,11 @@
-# lightctl - Lightup CLI tool 
+# lightctl - Lightup CLI tool
 
 lightctl is Lightup's CLI tool.
 
+## Installation
+
 <details>
-  <summary>[Optional] Setup virtual env</summary>
+  <summary>Setup virtual env (optional)</summary>
 
 We prefer that lightctl is installed in a virtual environment to isolate from other dependencies on the system:
 
@@ -15,14 +17,14 @@ source .lightctl/bin/activate
 </details>
 
 
-Install using pip:
+Install using pip (Preferred):
 ```
 pip install lightctl==0.7.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
 ```
 
 <details>
-  <summary>[If needed] Install from source</summary>
-  
+  <summary>Install from source (if needed)</summary>
+
 In the very rare case where you would like to install it from source - you can run the following commands:
 ```
 python3 setup.py build
@@ -37,14 +39,36 @@ lightctl version
 lightctl --help
 ```
 
-Usage:
+## Usage
 
-You can check the usage of lightctl using the following command: 
+You can check the usage of lightctl using the following command:
 
 ```lightctl --help```
 
-API credentials
+### API credentials
 
-Lightctl relies on API credentials associated with a specific Lightup cluster. Please see Lightup documentation to see how to get these credentials on a per cluster basis. These credentials can be saved under `~/.lightup/credential` or if in a different path, as follows:
+Lightctl relies on API credentials associated with a specific Lightup cluster. Please see Lightup documentation to see how to get these credentials on a per cluster basis. These credentials can be saved under `~/.lightup/credential`. If saved in a different path, use the command as follows:
 
-```LIGHTUP_API_CREDENTIAL=<path-to-credential> lightctl ...```
+```LIGHTCTL_CREDENTIAL_PATH=<path-to-credential> lightctl ...```
+
+or
+
+```
+export LIGHTCTL_CREDENTIAL_PATH=<path-to-credential>
+lightctl ...
+```
+
+### Working with workspaces
+
+Lightctl operates on data objects within the context of a workspace. Commands involve workspace id as a parameter. In the absence of a workspace id parameter, lightctl will use a default workspace (which may or may not exist on your system)
+
+```
+lightctl --workspace <workspace id> ....
+```
+
+
+In order to set the base workspace, you can set the environment variable:
+```
+export LIGHTCTL_DEFAULT_WORKSPACE=<workspace id>
+lightctl ...
+```

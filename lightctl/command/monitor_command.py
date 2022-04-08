@@ -15,7 +15,7 @@ def monitor():
 @monitor.command()
 @click.pass_obj
 def list(context_obj):
-    res = monitor_client.list_monitors()
+    res = monitor_client.list_monitors(context_obj.workspace_id)
     context_obj.printer.print(res)
 
 
@@ -23,7 +23,7 @@ def list(context_obj):
 @click.argument("id")
 @click.pass_obj
 def get(context_obj, id):
-    res = monitor_client.get_monitor(id)
+    res = monitor_client.get_monitor(context_obj.workspace_id, id)
     context_obj.printer.print(res)
 
 
@@ -31,7 +31,7 @@ def get(context_obj, id):
 @click.argument("id")
 @click.pass_obj
 def delete(context_obj, id):
-    res = monitor_client.delete_monitor(id)
+    res = monitor_client.delete_monitor(context_obj.workspace_id, id)
     context_obj.printer.print(res)
 
 
@@ -39,7 +39,7 @@ def delete(context_obj, id):
 @click.argument("id")
 @click.pass_obj
 def clone(context_obj, id):
-    res = monitor_client.get_monitor(id)
+    res = monitor_client.get_monitor(context_obj.workspace_id, id)
     if not res:
         context_obj.printer.print({"error": "not found"})
 
@@ -54,7 +54,7 @@ def clone(context_obj, id):
 @click.pass_obj
 def create(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = monitor_client.create_monitor(data)
+    res = monitor_client.create_monitor(context_obj.workspace_id, data)
     context_obj.printer.print(res)
 
 
@@ -64,5 +64,5 @@ def create(context_obj, file):
 @click.pass_obj
 def update(context_obj, id, file):
     data = context_obj.file_loader.load(file)
-    res = monitor_client.update_monitor(id, data)
+    res = monitor_client.update_monitor(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)

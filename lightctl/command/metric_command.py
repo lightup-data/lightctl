@@ -15,7 +15,7 @@ def metric():
 @metric.command()
 @click.pass_obj
 def list(context_obj):
-    res = metric_client.list_metrics()
+    res = metric_client.list_metrics(context_obj.workspace_id)
     context_obj.printer.print(res)
 
 
@@ -23,7 +23,7 @@ def list(context_obj):
 @click.argument("id", type=click.UUID)
 @click.pass_obj
 def get(context_obj, id):
-    res = metric_client.get_metric(id)
+    res = metric_client.get_metric(context_obj.workspace_id, id)
     context_obj.printer.print(res)
 
 
@@ -31,7 +31,7 @@ def get(context_obj, id):
 @click.argument("id")
 @click.pass_obj
 def delete(context_obj, id):
-    res = metric_client.delete_metric(id)
+    res = metric_client.delete_metric(context_obj.workspace_id, id)
     context_obj.printer.print(res)
 
 
@@ -39,7 +39,7 @@ def delete(context_obj, id):
 @click.argument("id")
 @click.pass_obj
 def clone(context_obj, id):
-    res = metric_client.get_metric(id)
+    res = metric_client.get_metric(context_obj.workspace_id, id)
     if not res:
         context_obj.printer.print({"error": "not found"})
 
@@ -54,7 +54,7 @@ def clone(context_obj, id):
 @click.pass_obj
 def create(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = metric_client.create_metric(data)
+    res = metric_client.create_metric(context_obj.workspace_id, data)
     context_obj.printer.print(res)
 
 
@@ -64,7 +64,7 @@ def create(context_obj, file):
 @click.pass_obj
 def update(context_obj, id, file):
     data = context_obj.file_loader.load(file)
-    res = metric_client.update_metric(id, data)
+    res = metric_client.update_metric(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)
 
 
@@ -73,7 +73,7 @@ def update(context_obj, id, file):
 @click.pass_obj
 def inspect_schema(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = metric_client.inspect_schema(data)
+    res = metric_client.inspect_schema(context_obj.workspace_id, data)
     context_obj.printer.print(res)
 
 
@@ -82,7 +82,7 @@ def inspect_schema(context_obj, file):
 @click.pass_obj
 def inspect_data(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = metric_client.inspect_schema(data)
+    res = metric_client.inspect_schema(context_obj.workspace_id, data)
     context_obj.printer.print(res)
 
 
@@ -91,7 +91,7 @@ def inspect_data(context_obj, file):
 @click.pass_obj
 def inspect_distinct_values(context_obj, file):
     data = context_obj.file_loader.load(file)
-    res = metric_client.inspect_distinct_values(data)
+    res = metric_client.inspect_distinct_values(context_obj.workspace_id, data)
     context_obj.printer.print(res)
 
 
@@ -99,5 +99,5 @@ def inspect_distinct_values(context_obj, file):
 @click.argument("id", type=click.UUID)
 @click.pass_obj
 def get_schema(context_obj, id):
-    res = metric_client.get_schema(id)
+    res = metric_client.get_schema(context_obj.workspace_id, id)
     context_obj.printer.print(res)

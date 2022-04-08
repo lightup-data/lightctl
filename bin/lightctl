@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import os
 import sys
 
 import click
@@ -12,21 +13,27 @@ from lightctl.command import (
     version_command,
 )
 from lightctl.command.common import ContextObject
+from lightctl.config import BASE_WORKSPACE_UUID
 from lightctl.util import CliPrinter, FileLoader
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 help_message = """
-lightctl needs credential file, whose path can be configured via LIGHTUP_API_CREDENTIAL.
-Default is  ~/.lightup/credential
-
+lightctl needs credential file, whose path can be configured via
+LIGHTCTL_CREDENTIAL_PATH. Default is  ~/.lightup/credential\n
+\n
+You can also setup LIGHTCTL_DEFAULT_WORKSPACE for the default
+workspace you are operating on for objects that are workspace
+specific. Default is \n
+\n
 Examples:\n
-$ lightctl --workspace 497d2c3e-2e24-47ec-b33a-dcf3999062a7 monitor list\n
-$ lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+$ lightctl --workspace 640fafa0-b764-11ec-b383-acde48001122  monitor list\n
+$ LIGHTCTL_DEFAULT_WORKSPACE=640fafa0-b764-11ec-b383-acde48001122 lightctl monitor get 2d975f53-c124-4c08-b130-85a141ca7ba5\n
+\n
+$ LIGHTCTL_CREDENTIAL_PATH=/foo/bar/api-credential lightctl monitor list\n
+$ lightctl monitor list\n
 
-$ LIGHTUP_API_CREDENTIAL=/foo/bar/api-credential lightctl monitor list\n
 """
-BASE_WORKSPACE_UUID = "497d2c3e-2e24-47ec-b33a-dcf3999062a7"
 
 
 @click.group(context_settings=CONTEXT_SETTINGS, help=help_message)

@@ -77,6 +77,12 @@ class BaseClient:
         check_status_code(r, 200)
         return json.loads(r.text)
 
+    def patch(self, endpoint: str, data: Dict, force: bool = False):
+        data = json.dumps(data, default=_json_serial)
+        headers = get_headers(force)
+        r = self._patch(endpoint, data=data, headers=headers)
+        assert r.status_code == 200 or r.status_code == 204
+
     @refresh_token_if_needed
     def _get(self, *args, **kwargs):
         headers = kwargs.pop("headers", {})
@@ -100,6 +106,12 @@ class BaseClient:
         headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.access_token}"
         return requests.put(*args, **kwargs, headers=headers)
+
+    @refresh_token_if_needed
+    def _patch(self, *args, **kwargs):
+        headers = kwargs.pop("headers", {})
+        headers["Authorization"] = f"Bearer {self.access_token}"
+        return requests.patch(*args, **kwargs, headers=headers)
 
     def _refresh_access_token(self):
         endpoint = urllib.parse.urljoin(

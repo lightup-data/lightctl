@@ -16,9 +16,9 @@ class WorkspaceClient(BaseClient):
         payload = {"name": name}
         return self.post(url, payload)
 
-    def delete_workspace(self, workspace_id: str) -> Dict:
-        url = urllib.parse.urljoin(self.workspaces_url)
-        return self.delete(url, workspace_id)
+    # def delete_workspace(self, workspace_id: str) -> Dict:
+    #     url = urllib.parse.urljoin(self.workspaces_url)
+    #     return self.delete(url, workspace_id)
 
     def list_workspaces(self) -> List[Dict]:
         return self.get(self.workspaces_url())

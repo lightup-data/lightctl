@@ -14,11 +14,13 @@ class WorkspaceClient(BaseClient):
     def create_workspace(self, name: str):
         url = self.workspaces_url()
         payload = {"name": name}
-        return self.post(url, payload)
+        res = self.post(url, payload)
+        return res["data"]
 
     # def delete_workspace(self, workspace_id: str) -> Dict:
     #     url = urllib.parse.urljoin(self.workspaces_url)
     #     return self.delete(url, workspace_id)
 
     def list_workspaces(self) -> List[Dict]:
-        return self.get(self.workspaces_url())
+        res = self.get(self.workspaces_url())
+        return res["data"]

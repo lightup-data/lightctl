@@ -34,7 +34,6 @@ $ LIGHTCTL_CREDENTIAL_PATH=/foo/bar/api-credential lightctl monitor list\n
 $ lightctl monitor list\n
 
 """
-BASE_WORKSPACE_UUID = "497d2c3e-2e24-47ec-b33a-dcf3999062a7"
 
 
 @click.group(context_settings=CONTEXT_SETTINGS, help=help_message)

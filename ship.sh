@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Usage: ./deploy.sh
+# Usage: ./ship.sh
 
 # Requirement
 # - we are using s3pypi that use S3 to distribute python package. See https://github.com/novemberfiveco/s3pypi

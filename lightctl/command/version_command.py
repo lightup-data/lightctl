@@ -15,8 +15,8 @@ def version(context_obj: ContextObject):
     backend_image = server_info["image_and_tags"]["backend"]
     backend_version = backend_image.split("@")[0].split(":")[1]
     res = {
-        "server_version": backend_version,
-        "client_version": __version__,
         "api_version": API_VERSION,
+        "cluster": f"{healthz_client.url_base} ({backend_version})",
+        "version": __version__,
     }
     context_obj.printer.print(res)

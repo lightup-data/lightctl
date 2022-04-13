@@ -14,8 +14,8 @@ class MonitorClient(BaseClient):
             self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/monitors/"
         )
 
-    def list_monitors(self) -> List[Dict]:
-        res = self.get(self.monitors_url)
+    def list_monitors(self, workspace_id: str) -> List[Dict]:
+        res = self.get(self.monitors_url(workspace_id))
         return res.get("data", [])
 
     def get_monitor(self, workspace_id: str, id: str) -> Dict:

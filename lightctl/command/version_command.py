@@ -2,7 +2,6 @@ import click
 
 from lightctl.client.healthz_client import HealthzClient
 from lightctl.command.common import ContextObject
-from lightctl.config import API_VERSION
 from lightctl.version import __version__
 
 healthz_client = HealthzClient()
@@ -15,8 +14,8 @@ def version(context_obj: ContextObject):
     backend_image = server_info["image_and_tags"]["backend"]
     backend_version = backend_image.split("@")[0].split(":")[1]
     res = {
-        "api_version": API_VERSION,
-        "cluster": f"{healthz_client.url_base} ({backend_version})",
-        "version": __version__,
+        "lightctl version": __version__,
+        "cluster": healthz_client.url_base,
+        "cluster version": backend_version,
     }
     context_obj.printer.print(res)

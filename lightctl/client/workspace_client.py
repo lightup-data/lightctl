@@ -11,11 +11,18 @@ class WorkspaceClient(BaseClient):
     def workspaces_url(self) -> str:
         return urllib.parse.urljoin(self.url_base, f"/api/v1/workspaces/")
 
+    def deactivate_workspace_url(self, workspace_id) -> str:
+        return urllib.parse.urljoin(self.url_base, f"/api/v1/ws/{workspace_id}/workspaces/deactivate")
+
     def create_workspace(self, name: str):
         url = self.workspaces_url()
         payload = {"name": name}
         res = self.post(url, payload)
         return res["data"]
+
+    def deactivate_workspace(self, workspace_id: str):
+        url = self.deactivate_workspaces_url(workspace_id)
+        return self.post(url, {})
 
     # def delete_workspace(self, workspace_id: str) -> Dict:
     #     url = urllib.parse.urljoin(self.workspaces_url)

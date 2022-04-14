@@ -21,7 +21,7 @@ class WorkspaceClient(BaseClient):
         return res["data"]
 
     def deactivate_workspace(self, workspace_id: str):
-        url = self.deactivate_workspaces_url(workspace_id)
+        url = self.deactivate_workspace_url(workspace_id)
         return self.post(url, {})
 
     # def delete_workspace(self, workspace_id: str) -> Dict:

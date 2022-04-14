@@ -22,7 +22,7 @@ class WorkspaceClient(BaseClient):
 
     def deactivate_workspace(self, workspace_id: str):
         url = self.deactivate_workspace_url(workspace_id)
-        return self.post(url, {})
+        return self.post(url, {}, expected_status=204)
 
     # def delete_workspace(self, workspace_id: str) -> Dict:
     #     url = urllib.parse.urljoin(self.workspaces_url)

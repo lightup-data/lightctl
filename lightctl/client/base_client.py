@@ -62,7 +62,10 @@ class BaseClient:
         headers = get_headers()
         r = self._post(endpoint, data=data, headers=headers)
         check_status_code(r, expected_status)
-        return json.loads(r.text)
+        try:
+            return json.loads(r.text)
+        except json.decoder.JSONDecodeError:
+            return {}
 
     def delete(self, endpoint: str, id: str, force: bool = False):
         headers = get_headers(force)

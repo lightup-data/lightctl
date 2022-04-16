@@ -24,7 +24,7 @@ LIGHTCTL_CREDENTIAL_PATH. Default is  ~/.lightup/credential\n
 \n
 You can also setup LIGHTCTL_DEFAULT_WORKSPACE for the default
 workspace you are operating on for objects that are workspace
-specific. Default is \n
+specific.\n
 \n
 Examples:\n
 $ lightctl --workspace 640fafa0-b764-11ec-b383-acde48001122  monitor list\n

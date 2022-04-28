@@ -23,7 +23,7 @@ def list(context_obj):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def get(context_obj, id):
     """
@@ -34,7 +34,7 @@ def get(context_obj, id):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def delete(context_obj, id):
     """
@@ -45,7 +45,7 @@ def delete(context_obj, id):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def trigger(context_obj, id):
     """
@@ -72,7 +72,7 @@ def create(context_obj, file):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def update(context_obj, id, file):
@@ -97,7 +97,7 @@ def inspect(context_obj, file):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def list_tables(context_obj, id):
     """
@@ -108,7 +108,7 @@ def list_tables(context_obj, id):
 
 
 @source.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.argument("table_name")
 @click.pass_obj
 def get_table_schema(context_obj, id, table_name):

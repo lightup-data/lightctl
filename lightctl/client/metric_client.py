@@ -23,7 +23,7 @@ class MetricClient(BaseClient):
         url = urllib.parse.urljoin(self.metrics_url(workspace_id), id)
         return self.get(url)
 
-    def get_metric_by_name(self, workspace_id: str, name: str) -> Dict:
+    def get_metric_by_name(self, workspace_id: str, name: str) -> List[Dict]:
         url = urllib.parse.urljoin(self.metrics_url(workspace_id), f"?name={name}")
         return self.get(url)
 
@@ -39,20 +39,3 @@ class MetricClient(BaseClient):
     def delete_metric(self, workspace_id: str, id: str, force: bool = False):
         assert UUID(id)
         self.delete(self.metrics_url(workspace_id), id, force=force)
-
-    def inspect_schema(self, workspace_id: str, data: Dict) -> Dict:
-        url = urllib.parse.urljoin(self.metrics_url(workspace_id), "schema")
-        return self.post(url, data, expected_status=200)
-
-    def inspect_data(self, workspace_id: str, data: Dict) -> Dict:
-        url = urllib.parse.urljoin(self.metrics_url(workspace_id), "preview")
-        return self.post(url, data, expected_status=200)
-
-    def inspect_distinct_values(self, workspace_id: str, data: Dict) -> List:
-        url = urllib.parse.urljoin(self.metrics_url(workspace_id), "distinct-values")
-        return self.post(url, data, expected_status=200)
-
-    def get_schema(self, workspace_id: str, id: str) -> List:
-        assert UUID(id)
-        url = urllib.parse.urljoin(self.metrics_url(workspace_id), f"{id}/schema")
-        return self.get(url)

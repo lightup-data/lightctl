@@ -34,7 +34,7 @@ def get(context_obj, id):
 
 
 @metric.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def delete(context_obj, id):
     """
@@ -45,7 +45,7 @@ def delete(context_obj, id):
 
 
 @metric.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.pass_obj
 def clone(context_obj, id):
     """
@@ -74,7 +74,7 @@ def create(context_obj, file):
 
 
 @metric.command()
-@click.argument("id")
+@click.argument("id", type=click.UUID)
 @click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
 def update(context_obj, id, file):

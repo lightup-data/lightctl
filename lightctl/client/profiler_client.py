@@ -19,16 +19,22 @@ class ProfilerClient(BaseClient):
     def schema_uuid_from_schema_name(
         self, workspace_id: str, source_uuid: str, schema_name: str
     ) -> str:
-        return ""
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+        url = urllib.parse.urljoin(base_url, "schemas")
+
+        schemas = self.get(url)
+        for schema in schemas["data"]:
+            if schema["name"] == schema_name:
+                return schema["uuid"]
 
     def get_schema_profiler_config(
-        self, workspace_id: str, source_uuid: str, table_uuid: str
+        self, workspace_id: str, source_uuid: str, schema_uuid: str
     ) -> Dict:
         base_url = self.profiler_base_url(workspace_id, source_uuid)
 
         url = urllib.parse.urljoin(
             base_url,
-            f"schemas/{table_uuid}/profiler-config",
+            f"schemas/{schema_uuid}/profiler-config",
         )
         return self.get(url)
 

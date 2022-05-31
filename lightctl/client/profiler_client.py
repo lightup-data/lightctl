@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict
+from typing import Dict, Optional
 
 from lightctl.client.base_client import BaseClient
 from lightctl.config import API_VERSION
@@ -48,9 +48,25 @@ class ProfilerClient(BaseClient):
 
     # table level functions
     def table_uuid_from_table_name(
-        self, workspace_id: str, source_uuid: str, table_name: str
-    ) -> str:
-        return ""
+        self,
+        workspace_id: str,
+        source_uuid: str,
+        table_name: str,
+        schema_name: Optional[str] = None,
+    ) -> Optional[str]:
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        url = urllib.parse.urljoin(base_url, f"tables?table_names={table_name}")
+
+        if schema_name:
+            url += f"&schema_names={schema_name}"
+
+        res = self.get(url)
+        if len(res["data"]) != 1:
+            return None
+
+        table_profile = res["data"][0]
+        return table_profile.get("uuid")
 
     def get_table_profiler_config(
         self, workspace_id: str, source_uuid: str, schema_uuid: str
@@ -75,7 +91,18 @@ class ProfilerClient(BaseClient):
     def column_uuid_from_column_name(
         self, workspace_id: str, source_uuid: str, table_uuid: str, column_name: str
     ) -> str:
-        return ""
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        url = urllib.parse.urljoin(
+            base_url, f"tables/{table_uuid}/?column_names={column_name}"
+        )
+
+        res = self.get(url)
+        if len(res["data"]) != 1:
+            return None
+
+        column_profile = res["data"][0]
+        return column_profile.get("uuid")
 
     def get_column_profiler_config(
         self, workspace_id: str, source_uuid: str, table_uuid: str, column_uuid: str

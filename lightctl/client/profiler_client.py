@@ -69,13 +69,13 @@ class ProfilerClient(BaseClient):
         return table_profile.get("uuid")
 
     def get_table_profiler_config(
-        self, workspace_id: str, source_uuid: str, schema_uuid: str
+        self, workspace_id: str, source_uuid: str, table_uuid: str
     ) -> Dict:
         base_url = self.profiler_base_url(workspace_id, source_uuid)
 
         url = urllib.parse.urljoin(
             base_url,
-            f"schemas/{schema_uuid}/profiler-config",
+            f"tables/{table_uuid}/profiler-config",
         )
         return self.get(url)
 
@@ -90,7 +90,7 @@ class ProfilerClient(BaseClient):
     # column level functions
     def column_uuid_from_column_name(
         self, workspace_id: str, source_uuid: str, table_uuid: str, column_name: str
-    ) -> str:
+    ) -> Optional[str]:
         base_url = self.profiler_base_url(workspace_id, source_uuid)
 
         url = urllib.parse.urljoin(

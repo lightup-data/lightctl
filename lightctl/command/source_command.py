@@ -55,7 +55,7 @@ def trigger(context_obj, id):
     if not res:
         context_obj.printer.print({"error": "not found"})
         return
-    res = source_client.trigger_source(id)
+    res = source_client.trigger_source(context_obj.workspace_id, id)
     context_obj.printer.print(res)
 
 

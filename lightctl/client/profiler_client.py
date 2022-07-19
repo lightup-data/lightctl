@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from lightctl.client.base_client import BaseClient
 from lightctl.config import API_VERSION
@@ -128,3 +128,31 @@ class ProfilerClient(BaseClient):
             base_url, f"tables/{table_uuid}/columns/{column_uuid}/profiler-config"
         )
         return self.put(url, data)
+
+    def list_schemas(self, workspace_id: str, source_uuid: str) -> List[Dict]:
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        url = urllib.parse.urljoin(base_url, "schemas")
+        return self.get(url)
+
+    def list_tables(
+        self, workspace_id: str, source_uuid: str, schema_uuid: Optional[str] = None
+    ) -> List[Dict]:
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        tables_url = "tables"
+        if schema_uuid is not None:
+            tables_url += f"?schema_uuids={schema_uuid}"
+
+        url = urllib.parse.urljoin(base_url, tables_url)
+        return self.get(url)
+
+    def list_columns(
+        self, workspace_id: str, source_uuid: str, table_uuid: str
+    ) -> List[Dict]:
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        columns_url = f"tables/{table_uuid}/columns"
+
+        url = urllib.parse.urljoin(base_url, columns_url)
+        return self.get(url)

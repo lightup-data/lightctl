@@ -11,6 +11,7 @@ from lightctl.command import (
     monitor_command,
     source_command,
     version_command,
+    workspace_command,
 )
 from lightctl.command.common import ContextObject
 from lightctl.config import BASE_WORKSPACE_UUID
@@ -57,6 +58,7 @@ cli.add_command(version_command.version)
 cli.add_command(source_command.source)
 cli.add_command(metric_command.metric)
 cli.add_command(monitor_command.monitor)
+cli.add_command(workspace_command.workspace)
 
 
 def setup_loggers(loggers, level=logging.INFO):

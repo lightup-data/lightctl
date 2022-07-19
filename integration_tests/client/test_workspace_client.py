@@ -12,5 +12,10 @@ class TestWorkspaceClient:
             f"lightctl-ws-test-{uuid.uuid4()}"
         )
         assert res["uuid"] not in [ws["uuid"] for ws in workspaces]
+
         workspaces = fixture_workspace_client.list_workspaces()
-        assert res in workspaces
+        assert res["uuid"] in [ws["uuid"] for ws in workspaces]
+
+        fixture_workspace_client.delete_workspace(res["uuid"])
+        workspaces = fixture_workspace_client.list_workspaces()
+        assert res["uuid"] not in [ws["uuid"] for ws in workspaces]

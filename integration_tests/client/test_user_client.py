@@ -1,5 +1,5 @@
+import uuid
 from typing import Dict
-from uuid import uuid4
 
 import pytest
 
@@ -8,13 +8,23 @@ from lightctl.client.user_client import UserClient
 
 class TestUserClient:
     @pytest.fixture
-    def fixture_user_client(self):
+    def fixture_user_client(self) -> UserClient:
         return UserClient()
 
+    @pytest.fixture
+    def fixture_user(self, fixture_user_client) -> str:
+        user_id = f"testerlightup+{uuid.uuid4()}@gmail.com"
+        fixture_user_client.admin_add_user(user_id, "app_admin")
+        yield user_id
+        fixture_user_client.admin_delete_user(user_id)
+
     def test_add_update_remove_user(
-        self, fixture_workspace: Dict, fixture_user_client: UserClient
+        self,
+        fixture_workspace: Dict,
+        fixture_user_client: UserClient,
+        fixture_user: str,
     ):
-        test_user = f"testerlightup+{uuid4()}@gmail.com"
+        test_user = fixture_user
         workspace_id = fixture_workspace["uuid"]
 
         res = fixture_user_client.list_users(workspace_id)

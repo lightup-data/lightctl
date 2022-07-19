@@ -9,7 +9,7 @@ from lightctl.client.source_client import SourceClient
 
 class TestSourceClient:
     @pytest.fixture
-    def fixture_source_client(self, fixture_workspace) -> SourceClient:
+    def fixture_source_client(self) -> SourceClient:
         source_client = SourceClient()
         return source_client
 

@@ -18,8 +18,9 @@ class WorkspaceClient(BaseClient):
         return res["data"]
 
     def delete_workspace(self, workspace_id: str) -> Dict:
-        url = self.workspaces_url()
-        return self.delete(url, workspace_id)
+        # note that delete workspace is associated with different url.
+        url = urllib.parse.urljoin(self.url_base, "/api/v1/ws/")
+        return self.delete(url, workspace_id, force=True)
 
     def list_workspaces(self) -> List[Dict]:
         res = self.get(self.workspaces_url())

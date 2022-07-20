@@ -114,8 +114,10 @@ class SourceClient(BaseClient):
     def activate_source(self, workspace_id: str, id: UUID, enable: bool = True):
         source = self.get_source(workspace_id, id)
         profiler_config = source["config"]["profiler"]
-        if profiler_config["enabled"] != enable:
-            profiler_config["enabled"] = enable
+        if profiler_config["enabled"] == enable:
+            return profiler_config
+
+        profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id), f"{id}/profile/profiler_config"
         )
@@ -126,8 +128,10 @@ class SourceClient(BaseClient):
     ):
         schema = self.get_schema(workspace_id, id, schema_id)
         profiler_config = schema["profiler_config"]
-        if profiler_config["enabled"] != enable:
-            profiler_config["enabled"] = enable
+        if profiler_config["enabled"] == enable:
+            return profiler_config
+
+        profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
             f"{id}/profile/schemas/{schema_id}/profiler_config",
@@ -139,8 +143,10 @@ class SourceClient(BaseClient):
     ):
         table = self.get_table(workspace_id, id, table_id)
         profiler_config = table["profiler_config"]
-        if profiler_config["enabled"] != enable:
-            profiler_config["enabled"] = enable
+        if profiler_config["enabled"] == enable:
+            return profiler_config
+
+        profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
             f"{id}/profile/tables/{table_id}/profiler_config",
@@ -157,8 +163,10 @@ class SourceClient(BaseClient):
     ):
         column = self.get_column(workspace_id, id, table_id, column_id)
         profiler_config = column["profiler_config"]
-        if profiler_config["enabled"] != enable:
-            profiler_config["enabled"] = enable
+        if profiler_config["enabled"] == enable:
+            return profiler_config
+
+        profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
             f"{id}/profile/tables/{table_id}/columns/{column_id}/profiler_config",

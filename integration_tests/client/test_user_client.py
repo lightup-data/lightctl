@@ -14,9 +14,22 @@ class TestUserClient:
     @pytest.fixture
     def fixture_user(self, fixture_user_client) -> str:
         user_id = f"testerlightup+{uuid.uuid4()}@gmail.com"
-        fixture_user_client.admin_add_user(user_id, "app_admin")
+        fixture_user_client.add_app_user(user_id, "app_admin")
         yield user_id
-        fixture_user_client.admin_delete_user(user_id)
+        fixture_user_client.delete_app_user(user_id)
+
+    def test_update_app_user_role(
+        self, fixture_user_client: UserClient, fixture_user: str
+    ):
+        app_users = fixture_user_client.list_app_users()
+        assert fixture_user in [user["username"] for user in app_users]
+
+        app_user = fixture_user_client.get_app_user(fixture_user)
+        assert app_user["role"]["name"] == "app_admin"
+
+        fixture_user_client.update_app_user_role(fixture_user, "app_viewer")
+        app_user = fixture_user_client.get_app_user(fixture_user)
+        assert app_user["role"]["name"] == "app_viewer"
 
     def test_add_update_remove_user(
         self,

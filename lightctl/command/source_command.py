@@ -27,7 +27,7 @@ def list(context_obj):
 @click.pass_obj
 def get(context_obj, id):
     """
-    list datasource configuration for specified uuid in a workspace
+    list datasource configuration for specified source uuid in a workspace
     """
     res = source_client.get_source(context_obj.workspace_id, id)
     context_obj.printer.print(res)
@@ -38,7 +38,7 @@ def get(context_obj, id):
 @click.pass_obj
 def delete(context_obj, id):
     """
-    delete datasource based on specified uuid
+    delete datasource based on specified source uuid
     """
     res = source_client.delete_source(context_obj.workspace_id, id)
     context_obj.printer.print(res)
@@ -101,7 +101,7 @@ def inspect(context_obj, file):
 @click.pass_obj
 def list_tables(context_obj, id):
     """
-    list all tables in a datasource
+    list all table profiles in a datasource
     """
     res = source_client.list_tables(context_obj.workspace_id, id)
     context_obj.printer.print(res)
@@ -109,11 +109,34 @@ def list_tables(context_obj, id):
 
 @source.command()
 @click.argument("id", type=click.UUID)
+@click.pass_obj
+def list_schemas(context_obj, id):
+    """
+    list all schema profiles in a datasource
+    """
+    res = source_client.list_schemas(context_obj.workspace_id, id)
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
+@click.argument("table_id", type=click.UUID)
+@click.pass_obj
+def list_columns(context_obj, id, table_id):
+    """
+    list all column profiles in the table in datasource
+    """
+    res = source_client.list_columns(context_obj.workspace_id, id, table_id)
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
 @click.argument("table_name")
 @click.pass_obj
-def get_table_schema(context_obj, id, table_name):
+def table_schema(context_obj, id, table_name):
     """
     get schema for a table in a datasource
     """
-    res = source_client.get_schema(context_obj.workspace_id, id, table_name)
+    res = source_client.get_table_schema(context_obj.workspace_id, id, table_name)
     context_obj.printer.print(res)

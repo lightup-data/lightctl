@@ -57,7 +57,7 @@ def clone(context_obj, id):
 
     res["metadata"].pop("uuid")
     res["metadata"]["name"] += "_Clone"
-    res = metric_client.create_metric(res)
+    res = metric_client.create_metric(context_obj.workspace_id, res)
     context_obj.printer.print(res)
 
 

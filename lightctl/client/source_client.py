@@ -107,9 +107,9 @@ class SourceClient(BaseClient):
         )
         return self.put(url, data)
 
-    def trigger_source(self, workspace_id: str, id: UUID) -> Dict:
+    def trigger_source(self, workspace_id: str, id: UUID, data: Dict) -> Dict:
         url = urllib.parse.urljoin(self.sources_url(workspace_id), f"{id}/trigger")
-        return self.put(url, data={})
+        return self.post(url, data=data)
 
     def activate_source(self, workspace_id: str, id: UUID, enable: bool = True):
         source = self.get_source(workspace_id, id)

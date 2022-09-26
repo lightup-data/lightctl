@@ -46,16 +46,18 @@ def delete(context_obj, id):
 
 @source.command()
 @click.argument("id", type=click.UUID)
+@click.argument("file", type=click.Path(exists=True))
 @click.pass_obj
-def trigger(context_obj, id):
+def trigger(context_obj, id, file):
     """
-    trigger a datasource scan, if datasource is configured as triggered
+    trigger metric or metrics under a table that are configured as triggered
     """
     res = source_client.get_source(context_obj.workspace_id, id)
     if not res:
         context_obj.printer.print({"error": "not found"})
         return
-    res = source_client.trigger_source(context_obj.workspace_id, id)
+    data = context_obj.file_loader.load(file)
+    res = source_client.trigger_source(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)
 
 

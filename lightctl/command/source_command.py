@@ -77,7 +77,6 @@ def trigger(context_obj, id, metric_uuids, table_uuids):
         table_uuids = [c.strip() for c in table_uuids.split(",")]
         data["table_uuids"] = table_uuids
 
-    data = {"metric_uuids": metric_uuids, "table_uuids": table_uuids}
     res = source_client.trigger_source(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)
 

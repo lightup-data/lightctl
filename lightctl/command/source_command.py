@@ -46,16 +46,38 @@ def delete(context_obj, id):
 
 @source.command()
 @click.argument("id", type=click.UUID)
+@click.option(
+    "--metric_uuids",
+    is_flag=False,
+    metavar="<metric_uuids>",
+    type=click.STRING,
+    help="Set metric uuids",
+)
+@click.option(
+    "--table_uuids",
+    is_flag=False,
+    metavar="<table_uuids>",
+    type=click.STRING,
+    help="Set table uuids",
+)
 @click.pass_obj
-def trigger(context_obj, id):
+def trigger(context_obj, id, metric_uuids, table_uuids):
     """
-    trigger a datasource scan, if datasource is configured as triggered
+    trigger metric or metrics under a table that are configured as triggered
     """
     res = source_client.get_source(context_obj.workspace_id, id)
     if not res:
         context_obj.printer.print({"error": "not found"})
         return
-    res = source_client.trigger_source(context_obj.workspace_id, id)
+    data = {}
+    if metric_uuids:
+        metric_uuids = [c.strip() for c in metric_uuids.split(",")]
+        data["metric_uuids"] = metric_uuids
+    if table_uuids:
+        table_uuids = [c.strip() for c in table_uuids.split(",")]
+        data["table_uuids"] = table_uuids
+
+    res = source_client.trigger_source(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)
 
 

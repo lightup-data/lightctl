@@ -1,6 +1,6 @@
 import os
 import uuid
-from typing import Dict, Final
+from typing import Dict
 
 import pytest
 
@@ -15,7 +15,7 @@ class TestSourceClient:
 
     @staticmethod
     def get_source_dict() -> Dict:
-        source_dict: Final[Dict] = {
+        source_dict: Dict = {
             "metadata": {"name": f"Lightctl Test Databricks - {uuid.uuid4()}"},
             "config": {
                 "connection": {

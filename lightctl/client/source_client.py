@@ -26,7 +26,7 @@ class SourceClient(BaseClient):
         ret_sources = []
         sources = self.list_sources(workspace_id)
         for source in sources:
-            if source["name"] == name:
+            if source["metadata"]["name"] == name:
                 ret_sources.append(source)
         return ret_sources
 
@@ -119,7 +119,7 @@ class SourceClient(BaseClient):
 
         profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
-            self.sources_url(workspace_id), f"{id}/profile/profiler_config"
+            self.sources_url(workspace_id), f"{id}/profile/profiler-config"
         )
         return self.put(url, data=profiler_config)
 
@@ -127,14 +127,14 @@ class SourceClient(BaseClient):
         self, workspace_id: str, id: UUID, schema_id: UUID, enable: bool = True
     ):
         schema = self.get_schema(workspace_id, id, schema_id)
-        profiler_config = schema["profiler_config"]
+        profiler_config = schema["profilerConfig"]
         if profiler_config["enabled"] == enable:
             return profiler_config
 
         profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
-            f"{id}/profile/schemas/{schema_id}/profiler_config",
+            f"{id}/profile/schemas/{schema_id}/profiler-config",
         )
         return self.put(url, data=profiler_config)
 
@@ -142,14 +142,14 @@ class SourceClient(BaseClient):
         self, workspace_id: str, id: UUID, table_id: UUID, enable: bool = True
     ):
         table = self.get_table(workspace_id, id, table_id)
-        profiler_config = table["profiler_config"]
+        profiler_config = table["profilerConfig"]
         if profiler_config["enabled"] == enable:
             return profiler_config
 
         profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
-            f"{id}/profile/tables/{table_id}/profiler_config",
+            f"{id}/profile/tables/{table_id}/profiler-config",
         )
         return self.put(url, data=profiler_config)
 
@@ -162,13 +162,13 @@ class SourceClient(BaseClient):
         enable: bool = True,
     ):
         column = self.get_column(workspace_id, id, table_id, column_id)
-        profiler_config = column["profiler_config"]
+        profiler_config = column["profilerConfig"]
         if profiler_config["enabled"] == enable:
             return profiler_config
 
         profiler_config["enabled"] = enable
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
-            f"{id}/profile/tables/{table_id}/columns/{column_id}/profiler_config",
+            f"{id}/profile/tables/{table_id}/columns/{column_id}/profiler-config",
         )
         return self.put(url, data=profiler_config)

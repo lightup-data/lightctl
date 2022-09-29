@@ -26,7 +26,7 @@ class SourceClient(BaseClient):
         ret_sources = []
         sources = self.list_sources(workspace_id)
         for source in sources:
-            if source["name"] == name:
+            if source["metadata"]["name"] == name:
                 ret_sources.append(source)
         return ret_sources
 

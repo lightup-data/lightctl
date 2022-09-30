@@ -19,7 +19,7 @@ source .lightctl/bin/activate
 
 Install using pip (Preferred):
 ```
-pip install lightctl==0.10.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
+pip install lightctl==0.14.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
 ```
 
 <details>
@@ -72,3 +72,15 @@ In order to set the base workspace, you can set the environment variable:
 export LIGHTCTL_DEFAULT_WORKSPACE=<workspace id>
 lightctl ...
 ```
+
+### lightctl development
+
+You can setup the environment using the following command:
+
+```
+source ./dev.sh
+```
+
+Currently, we test lightctl using the integration tests pointed to a test cluster. Test coverage is sparse. Unit and integration tests are needed.
+
+Lightctl is published using `ship.sh`. This pushes lightctl to the S3 bucket using s3pypi. Users that want to push another version need to have sufficient write permissions.

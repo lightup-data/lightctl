@@ -162,3 +162,31 @@ def table_schema(context_obj, id, table_name):
     """
     res = source_client.get_table_schema(context_obj.workspace_id, id, table_name)
     context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
+@click.argument("table_uuid", type=click.UUID)
+@click.pass_obj
+def list_table(context_obj, id, table_uuid):
+    """
+    list a table profile in a datasource
+    """
+    res = source_client.get_table(context_obj.workspace_id, id, table_uuid)
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
+@click.argument("table_uuid", type=click.UUID)
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def update_table_profiler_config(context_obj, id, table_uuid, file):
+    """
+    update the profiler config of the table
+    """
+    data = context_obj.file_loader.load(file)
+    res = source_client.update_profiler_config(
+        context_obj.workspace_id, id, table_uuid, data
+    )
+    context_obj.printer.print(res)

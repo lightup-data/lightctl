@@ -25,3 +25,30 @@ class WorkspaceClient(BaseClient):
     def list_workspaces(self) -> List[Dict]:
         res = self.get(self.workspaces_url())
         return res["data"]
+
+    def list_workspace_schedules(self, workspace_id: str) -> List[Dict]:
+        """Returns a list of schedules for a Workspace."""
+        return self.get(urllib.parse.urljoin(self.url_base, f"/api/v0/ws/{workspace_id}/schedules/"))
+
+    def list_workspace_users(self, workspace_id: str) -> List[Dict]:
+        """Returns a list of users for a Workspace."""
+        return self.get(urllib.parse.urljoin(self.url_base, f"/api/v0/ws/{workspace_id}/users/"))
+
+    def get_workspace_tags(self, workspace_id: str) -> List:
+        """Returns a list of unique tags in a Workspace."""
+        return self.get(urllib.parse.urljoin(self.url_base, f"/api/v0/ws/{workspace_id}/tags/"))
+
+    def list_workspace_channels(self, workspace_id: str) -> List[Dict]:
+        """Returns a list of alert notification channels in a Workspace."""
+        return self.get(urllib.parse.urljoin(self.url_base, f"/api/v0/ws/{workspace_id}/alerting-channels/"))
+
+    def list_workspace_events(self, workspace_id: str, start_ts: int = None, end_ts: int = None) -> List[Dict]:
+        """Returns a list of alert notification channels in a Workspace."""
+        start_ts = f"?start_ts={start_ts}" if start_ts else ""
+        end_ts = f"&end_ts={end_ts}" if end_ts else ""
+        url = (
+                self.url_base
+                + f"/api/v0/ws/{workspace_id}/events/"
+                + f"{start_ts}{end_ts}"
+        )
+        return self.get(url).get("data")

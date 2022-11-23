@@ -22,9 +22,10 @@ class IncidentClient(BaseClient):
             self.url_base, f"/api/v0/ws/{workspace_id}/incidents/"
         )
 
-    def incidents_samples_url(self, workspace_id, id) -> str:
+    def incidents_samples_url(self, workspace_id) -> str:
         return urllib.parse.urljoin(
-            self.url_base, f"/api/v0/ws/{workspace_id}/incidents/{id}/samples"
+            self.url_base,
+            f"/api/v0/ws/{workspace_id}/incidents/incident-samples-preview",
         )
 
     def list_incidents(
@@ -75,6 +76,12 @@ class IncidentClient(BaseClient):
         url = urllib.parse.urljoin(self.incidents_url(workspace_id), f"{id}")
         return self.patch(url, data={"validation": {"status": validation_status}})
 
-    def get_incident_samples(self, workspace_id: str, id: str) -> Dict:
-        url = self.incidents_samples_url(workspace_id, id)
-        return self.post(url, {}, expected_status=200)
+    def get_incident_samples(
+        self, workspace_id: str, id: str, preview_uuid: str
+    ) -> Dict:
+        data = {"incidentUuid": id, "previewUuid": preview_uuid}
+        url = self.incidents_samples_url(workspace_id)
+        import pdb
+
+        pdb.set_trace()
+        return self.post(url, data, expected_status=200)

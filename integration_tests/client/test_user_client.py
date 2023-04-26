@@ -5,6 +5,7 @@ import pytest
 
 from lightctl.client.user_client import UserClient
 
+TEST_EMAIL_ADDRESS = "fillmein+{}@xyz.com"
 
 class TestUserClient:
     @pytest.fixture
@@ -13,7 +14,7 @@ class TestUserClient:
 
     @pytest.fixture
     def fixture_user(self, fixture_user_client) -> str:
-        user_id = f"testerlightup+{uuid.uuid4()}@gmail.com"
+        user_id = TEST_EMAIL_ADDRESS.format(str(uuid.uuid4()))
         fixture_user_client.add_app_user(user_id, "app_admin")
         yield user_id
         fixture_user_client.delete_app_user(user_id)

@@ -9,6 +9,28 @@ logger = logging.getLogger(__name__)
 
 
 class IncidentClient(BaseClient):
+    """
+    Helper functions for acessing incidents
+
+    Example:
+        mc = MetricClient()
+        wc = WorkspaceClient()
+        rc = MonitorClient()
+        ic = IncidentClient()
+        workspace_list = wc.list_workspaces()
+        for workspace in workspace_list:
+            workspace_id = workspace["uuid"]
+            metric_list = mc.list_metrics(workspace_id)
+            for metric in metric_list:
+                metric_id = metric["metadata"]["uuid"]
+                monitor_list = rc.get_monitors_by_metric(workspace_id, metric_id)
+                for monitor in monitor_list:
+                    incidents = ic.get_incidents(workspace_id, monitor["metadata"]["uuid"], start_ts, end_ts)
+                    num_incidents = 0
+                    if len(incidents) > 0:
+                        num_incidents = len(incidents)
+                        print("Workspace {workspace['name']} Metric {metric['metatdata']['name']} Monitor {monitor['metadata']['name']} {num_incidents} Incidents)
+    """
     INCIDENT_STATUS_MAP = {
         "unviewed": 1,
         "viewed": 2,
@@ -18,6 +40,10 @@ class IncidentClient(BaseClient):
     }
 
     def incidents_url(self, workspace_id) -> str:
+        """
+        Returns:
+           str: The incidents endpoint, used for getting incidents
+        """
         return urllib.parse.urljoin(
             self.url_base, f"/api/v0/ws/{workspace_id}/incidents/"
         )
@@ -33,6 +59,19 @@ class IncidentClient(BaseClient):
         source_id: Optional[str] = None,
         status: Optional[str] = None,
     ) -> Dict:
+        """
+        Args:
+            workspace_id (str): Id of workspace
+            start_ts (int): start of time range in which to search for incidents
+            end_ts (int): end of time range in which to search for incidets
+            monitor_id (str): [Optional] Id of monitor associated with the incident
+            metric_id (str): [Optional] Id of metric associated with the incident
+            source_id (str): [Optional] Id of datasource associated with the incident
+            status (str): [Optional] Incident status
+
+        Returns:
+            list: List of matching incidents in the specified time range
+        """
         assert UUID(workspace_id)
         monitor_id_str = f"&monitor_uuids={monitor_id}" if monitor_id else ""
         metric_id_str = f"&metric_uuids={metric_id}" if metric_id else ""

@@ -72,10 +72,10 @@ def trigger(context_obj, id, metric_uuids, table_uuids):
     data = {}
     if metric_uuids:
         metric_uuids = [c.strip() for c in metric_uuids.split(",")]
-        data["metric_uuids"] = metric_uuids
+        data["metricUuids"] = metric_uuids
     if table_uuids:
         table_uuids = [c.strip() for c in table_uuids.split(",")]
-        data["table_uuids"] = table_uuids
+        data["tableUuids"] = table_uuids
 
     res = source_client.trigger_source(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)

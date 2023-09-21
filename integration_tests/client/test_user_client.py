@@ -75,7 +75,6 @@ class TestUserClient:
 
     def test_update_app_user_detail(
         self,
-        fixture_workspace: Dict,
         fixture_user_client: UserClient,
     ):
         user_id = TEST_EMAIL_ADDRESS

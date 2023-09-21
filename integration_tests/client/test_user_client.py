@@ -4,6 +4,7 @@ from typing import Dict
 import pytest
 
 from lightctl.client.user_client import UserClient
+from lightctl.util import LightupException
 
 TEST_EMAIL_ADDRESS = "fillmein+{}@xyz.com"
 
@@ -78,14 +79,18 @@ class TestUserClient:
         fixture_user_client: UserClient,
     ):
         user_id = TEST_EMAIL_ADDRESS
+        try:
+            fixture_user_client.delete_app_user(user_id)
+        except LightupException:
+            pass
         fixture_user_client.add_app_user(user_id, "app_viewer")
         app_user = fixture_user_client.get_app_user(user_id)
-        assert "expiration_timestamp" not in app_user
+        assert app_user["expiration_timestamp"] is None
 
-        fixture_user_client.update_app_user_detail(user_id, {"expirationTimestamp": 123456789})
+        fixture_user_client.update_app_user_detail(user_id, {"expirationTimestamp": 1704067200})
 
         app_user = fixture_user_client.get_app_user(user_id)
-        assert app_user["expiration_timestamp"] == 123456789
+        assert app_user["expiration_timestamp"] == 1704067200
 
         # clean up
         fixture_user_client.delete_app_user(user_id)

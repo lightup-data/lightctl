@@ -44,6 +44,20 @@ class UserClient(BaseClient):
         res = self.post(url, payload)
         return res
 
+    def update_app_user_detail(self, user_id: str, payload: dict):
+        """
+        Update a user's detail in the app
+
+        Args:
+            user_id (str): User id (email) of user to be updated
+            payload (dict): Properties to be modified
+        Returns:
+            dict: A user object
+        """
+        quoted_user = urllib.parse.quote_plus(user_id)
+        url = urllib.parse.urljoin(self.app_users_url(), quoted_user)
+        return self.patch(url, payload)
+
     def update_app_user_role(self, user_id: str, role: str):
         """
         Update a user's role in the app
@@ -51,14 +65,11 @@ class UserClient(BaseClient):
         Args:
             user_id (str): User id (email) of user to be updated
             role (str): New role of user. Legal roles are "app_admin", "app_editor", "app_viewer"
-        Returns: 
+        Returns:
             dict: A user object
         """
         assert role in ["app_admin", "app_editor", "app_viewer"]
-        quoted_user = urllib.parse.quote_plus(user_id)
-        url = urllib.parse.urljoin(self.app_users_url(), quoted_user)
-        payload = {"role": role}
-        return self.patch(url, payload)
+        return self.update_app_user_detail(user_id, {"role": role})
 
     def delete_app_user(self, user_id: str):
         """
@@ -147,7 +158,7 @@ class UserClient(BaseClient):
             workspace_id (str): Workspace id
             user_id (str): User id (email) of user to be removed
             role (str): New role of user. Legal roles are "viewer", "editor", "admin", and "observer" 
-        Returns: 
+        Returns:
             dict: A user object with role set to the user's role in the workspace
         """
         quoted_user = urllib.parse.quote_plus(user_id)

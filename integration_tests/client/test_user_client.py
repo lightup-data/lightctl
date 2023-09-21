@@ -7,6 +7,7 @@ from lightctl.client.user_client import UserClient
 
 TEST_EMAIL_ADDRESS = "fillmein+{}@xyz.com"
 
+
 class TestUserClient:
     @pytest.fixture
     def fixture_user_client(self) -> UserClient:
@@ -71,3 +72,21 @@ class TestUserClient:
 
         res = fixture_user_client.list_users(workspace_id)
         assert len(res) == 0
+
+    def test_update_app_user_detail(
+        self,
+        fixture_workspace: Dict,
+        fixture_user_client: UserClient,
+    ):
+        user_id = TEST_EMAIL_ADDRESS
+        fixture_user_client.add_app_user(user_id, "app_viewer")
+        app_user = fixture_user_client.get_app_user(user_id)
+        assert "expiration_timestamp" not in app_user
+
+        fixture_user_client.update_app_user_detail(user_id, {"expirationTimestamp": 123456789})
+
+        app_user = fixture_user_client.get_app_user(user_id)
+        assert app_user["expiration_timestamp"] == 123456789
+
+        # clean up
+        fixture_user_client.delete_app_user(user_id)

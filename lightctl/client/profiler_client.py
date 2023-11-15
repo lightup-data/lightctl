@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict, List, Optional
+from typing import Optional
 
 from lightctl.client.base_client import BaseClient
 from lightctl.config import API_VERSION
@@ -13,6 +13,7 @@ class ProfilerClient(BaseClient):
     Helper functions for acessing table configuration
 
     """
+
     def profiler_base_url(self, workspace_id: str, source_uuid) -> str:
         """
         Returns:
@@ -48,7 +49,7 @@ class ProfilerClient(BaseClient):
 
     def get_schema_profiler_config(
         self, workspace_id: str, source_uuid: str, schema_uuid: str
-    ) -> Dict:
+    ) -> dict:
         """
         Get schema configuration
 
@@ -69,8 +70,8 @@ class ProfilerClient(BaseClient):
         return self.get(url)
 
     def update_schema_profiler_config(
-        self, workspace_id: str, source_uuid: str, schema_uuid: str, data: Dict
-    ) -> Dict:
+        self, workspace_id: str, source_uuid: str, schema_uuid: str, data: dict
+    ) -> dict:
         """
         Update configuration for a schema in a datasource
 
@@ -122,7 +123,7 @@ class ProfilerClient(BaseClient):
 
     def get_table_profiler_config(
         self, workspace_id: str, source_uuid: str, table_uuid: str
-    ) -> Dict:
+    ) -> dict:
         """
         Get table configuration
 
@@ -143,8 +144,8 @@ class ProfilerClient(BaseClient):
         return self.get(url)
 
     def update_table_profiler_config(
-        self, workspace_id: str, source_uuid: str, table_uuid: str, data: Dict
-    ) -> Dict:
+        self, workspace_id: str, source_uuid: str, table_uuid: str, data: dict
+    ) -> dict:
         """
         Update configuration for a table in a datasource
 
@@ -191,7 +192,7 @@ class ProfilerClient(BaseClient):
 
     def get_column_profiler_config(
         self, workspace_id: str, source_uuid: str, table_uuid: str, column_uuid: str
-    ) -> Dict:
+    ) -> dict:
         """
         Get column configuration
 
@@ -217,8 +218,8 @@ class ProfilerClient(BaseClient):
         source_uuid: str,
         table_uuid: str,
         column_uuid: str,
-        data: Dict,
-    ) -> Dict:
+        data: dict,
+    ) -> dict:
         """
         Update configuration for a column
 
@@ -237,7 +238,7 @@ class ProfilerClient(BaseClient):
         )
         return self.put(url, data)
 
-    def list_schemas(self, workspace_id: str, source_uuid: str) -> List[Dict]:
+    def list_schemas(self, workspace_id: str, source_uuid: str) -> list[dict]:
         """
         Get all schemas in a workspace and specified datasource
 
@@ -255,7 +256,7 @@ class ProfilerClient(BaseClient):
 
     def list_tables(
         self, workspace_id: str, source_uuid: str, schema_uuid: Optional[str] = None
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """
         Get all tables in a datasource
 
@@ -278,7 +279,7 @@ class ProfilerClient(BaseClient):
 
     def list_columns(
         self, workspace_id: str, source_uuid: str, table_uuid: str
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """
         Get all columns in a table
 

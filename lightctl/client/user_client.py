@@ -1,6 +1,5 @@
 import logging
 import urllib.parse
-from typing import Dict, List
 
 from lightctl.client.base_client import BaseClient
 
@@ -28,7 +27,7 @@ class UserClient(BaseClient):
         """
         return urllib.parse.urljoin(self.url_base, "/api/v0/users/")
 
-    def add_app_user(self, username: str, role: str) -> Dict:
+    def add_app_user(self, username: str, role: str) -> dict:
         """
         Add a user to the app
 
@@ -101,7 +100,7 @@ class UserClient(BaseClient):
         url = urllib.parse.urljoin(self.app_users_url(), quoted_user)
         return self.get(url)
 
-    def list_app_users(self) -> List[Dict]:
+    def list_app_users(self) -> list[dict]:
         """
         Get all users in the app
 
@@ -123,7 +122,7 @@ class UserClient(BaseClient):
 
     def add_user_to_workspace(
         self, workspace_id: str, username: str, role: str
-    ) -> Dict:
+    ) -> dict:
         """
         Add a user to a workspace
 
@@ -140,7 +139,7 @@ class UserClient(BaseClient):
         res = self.post(url, payload)
         return res
 
-    def remove_user_from_workspace(self, workspace_id: str, username: str) -> Dict:
+    def remove_user_from_workspace(self, workspace_id: str, username: str) -> dict:
         """
         Remove user from a workspace
 
@@ -169,7 +168,7 @@ class UserClient(BaseClient):
         payload = {"role": role}
         return self.patch(url, payload)
 
-    def list_users(self, workspace_id: str) -> List[Dict]:
+    def list_users(self, workspace_id: str) -> list[dict]:
         """
         Get all users in the workspace
 

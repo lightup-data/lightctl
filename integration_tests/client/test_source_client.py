@@ -1,6 +1,5 @@
 import os
 import uuid
-from typing import Dict
 
 import pytest
 
@@ -14,8 +13,8 @@ class TestSourceClient:
         return source_client
 
     @staticmethod
-    def get_source_dict() -> Dict:
-        source_dict: Dict = {
+    def get_source_dict() -> dict:
+        source_dict: dict = {
             "metadata": {"name": f"Lightctl Test Databricks - {uuid.uuid4()}"},
             "config": {
                 "connection": {
@@ -35,7 +34,7 @@ class TestSourceClient:
 
     def test_source_create_list_delete(
         self,
-        fixture_workspace: Dict,
+        fixture_workspace: dict,
         fixture_source_client: SourceClient,
     ):
         workspace_id = fixture_workspace["uuid"]

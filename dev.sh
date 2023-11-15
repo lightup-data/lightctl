@@ -10,13 +10,13 @@ cd "${REPO_DIR}" || exit
 deactivate || true
 
 # set python dev env
-python3 -m venv .lightctl-venv
+python -m venv .lightctl-venv
 source .lightctl-venv/bin/activate
-pip3 install --upgrade pip
-pip3 install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
 # install pre-commit, use it Black as in .pre-commit-config.yaml
-pip3 install pre-commit
+python -m pip install pre-commit
 pre-commit install
 
 export PYTHONPATH=$(pwd):$PYTHONPATH

@@ -1,5 +1,4 @@
 import uuid
-from typing import Dict
 
 import pytest
 
@@ -36,7 +35,7 @@ class TestUserClient:
 
     def test_add_update_remove_user(
         self,
-        fixture_workspace: Dict,
+        fixture_workspace: dict,
         fixture_user_client: UserClient,
         fixture_user: str,
     ):
@@ -87,7 +86,9 @@ class TestUserClient:
         app_user = fixture_user_client.get_app_user(user_id)
         assert app_user["expiration_timestamp"] is None
 
-        fixture_user_client.update_app_user_detail(user_id, {"expirationTimestamp": 1704067200})
+        fixture_user_client.update_app_user_detail(
+            user_id, {"expirationTimestamp": 1704067200}
+        )
 
         app_user = fixture_user_client.get_app_user(user_id)
         assert app_user["expiration_timestamp"] == 1704067200

@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict, Optional
+from typing import Optional
 from uuid import UUID
 
 from lightctl.client.base_client import BaseClient
@@ -31,6 +31,7 @@ class IncidentClient(BaseClient):
                         num_incidents = len(incidents)
                         print("Workspace {workspace['name']} Metric {metric['metatdata']['name']} Monitor {monitor['metadata']['name']} {num_incidents} Incidents)
     """
+
     INCIDENT_STATUS_MAP = {
         "unviewed": 1,
         "viewed": 2,
@@ -58,7 +59,7 @@ class IncidentClient(BaseClient):
         metric_id: Optional[str] = None,
         source_id: Optional[str] = None,
         status: Optional[str] = None,
-    ) -> Dict:
+    ) -> dict:
         """
         Args:
             workspace_id (str): Id of workspace
@@ -92,7 +93,7 @@ class IncidentClient(BaseClient):
         )
         return self.get(url).get("data")
 
-    def update_incident_status(self, workspace_id: str, id: str, status: str) -> Dict:
+    def update_incident_status(self, workspace_id: str, id: str, status: str) -> dict:
         incident_status = self.INCIDENT_STATUS_MAP.get(status)
         assert incident_status is not None, f"invalid incident status '{status}'"
         url = urllib.parse.urljoin(self.incidents_url(workspace_id), f"{id}")
@@ -100,7 +101,7 @@ class IncidentClient(BaseClient):
 
     def update_incident_validation(
         self, workspace_id: str, id: str, status: str
-    ) -> Dict:
+    ) -> dict:
         validation_status = status.lower()
         assert validation_status in [
             "running",

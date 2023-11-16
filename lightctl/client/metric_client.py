@@ -1,6 +1,5 @@
 import logging
 import urllib.parse
-from typing import Dict, List
 from uuid import UUID
 
 from lightctl.client.base_client import BaseClient
@@ -23,6 +22,7 @@ class MetricClient(BaseClient):
             for metric in metric_list:
                 print("Workspace {workspace["name"]} Metric {metric["metatdata"]["name"]}
     """
+
     def metrics_url(self, workspace_id: str) -> str:
         """
         Returns:
@@ -32,7 +32,7 @@ class MetricClient(BaseClient):
             self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/metrics/"
         )
 
-    def list_metrics(self, workspace_id: str) -> List[Dict]:
+    def list_metrics(self, workspace_id: str) -> list[dict]:
         """
         Get all metrics in the workspace
 
@@ -44,7 +44,7 @@ class MetricClient(BaseClient):
         """
         return self.get(self.metrics_url(workspace_id))
 
-    def get_metric(self, workspace_id: str, id: UUID) -> Dict:
+    def get_metric(self, workspace_id: str, id: UUID) -> dict:
         """
         Get a metric by its uuid
 
@@ -58,7 +58,7 @@ class MetricClient(BaseClient):
         url = urllib.parse.urljoin(self.metrics_url(workspace_id), f"{id}")
         return self.get(url)
 
-    def get_metric_by_name(self, workspace_id: str, name: str) -> List[Dict]:
+    def get_metric_by_name(self, workspace_id: str, name: str) -> list[dict]:
         """
         Get a metric by its name
 
@@ -72,7 +72,7 @@ class MetricClient(BaseClient):
         url = urllib.parse.urljoin(self.metrics_url(workspace_id), f"?name={name}")
         return self.get(url)
 
-    def create_metric(self, workspace_id: str, data: Dict) -> Dict:
+    def create_metric(self, workspace_id: str, data: dict) -> dict:
         """
         Create a metric
 
@@ -86,8 +86,8 @@ class MetricClient(BaseClient):
         return self.post(self.metrics_url(workspace_id), data)
 
     def update_metric(
-        self, workspace_id: str, id: UUID, data: Dict, force: bool = False
-    ) -> Dict:
+        self, workspace_id: str, id: UUID, data: dict, force: bool = False
+    ) -> dict:
         """
         Update a metric
 

@@ -1,6 +1,5 @@
 import logging
 import urllib.parse
-from typing import Dict, List
 from uuid import UUID
 
 from lightctl.client.base_client import BaseClient
@@ -19,6 +18,7 @@ class SourceClient(BaseClient):
         for datasource in datasource_list:
             print("Datasource {datasource["name"]})
     """
+
     def sources_url(self, workspace_id: str) -> str:
         """
         Returns:
@@ -28,7 +28,7 @@ class SourceClient(BaseClient):
             self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/sources/"
         )
 
-    def list_sources(self, workspace_id: str) -> List[Dict]:
+    def list_sources(self, workspace_id: str) -> list[dict]:
         """
         Get all datasources in the workspace
 
@@ -40,7 +40,7 @@ class SourceClient(BaseClient):
         """
         return self.get(self.sources_url(workspace_id))
 
-    def get_source(self, workspace_id: str, id: UUID) -> Dict:
+    def get_source(self, workspace_id: str, id: UUID) -> dict:
         """
         Get a datasources by its uuid
 
@@ -54,7 +54,7 @@ class SourceClient(BaseClient):
         url = urllib.parse.urljoin(self.sources_url(workspace_id), f"{id}")
         return self.get(url)
 
-    def get_source_by_name(self, workspace_id: str, name: str) -> List[Dict]:
+    def get_source_by_name(self, workspace_id: str, name: str) -> list[dict]:
         """
         Get a datasource by its name
 
@@ -72,7 +72,7 @@ class SourceClient(BaseClient):
                 ret_sources.append(source)
         return ret_sources
 
-    def create_source(self, workspace_id: str, data: Dict) -> Dict:
+    def create_source(self, workspace_id: str, data: dict) -> dict:
         """
         Create a datasource
 
@@ -85,7 +85,7 @@ class SourceClient(BaseClient):
         """
         return self.post(self.sources_url(workspace_id), data)
 
-    def update_source(self, workspace_id: str, id: UUID, data: Dict) -> Dict:
+    def update_source(self, workspace_id: str, id: UUID, data: dict) -> dict:
         """
         Update a datasource
 
@@ -100,7 +100,7 @@ class SourceClient(BaseClient):
         url = urllib.parse.urljoin(self.sources_url(workspace_id), f"{id}")
         return self.put(url, data)
 
-    def delete_source(self, workspace_id: str, id: UUID) -> Dict:
+    def delete_source(self, workspace_id: str, id: UUID) -> dict:
         """
         Delete a datasource
 
@@ -111,13 +111,13 @@ class SourceClient(BaseClient):
         """
         self.delete(self.sources_url(workspace_id), f"{id}")
 
-    def inspect(self, workspace_id: str, data: Dict) -> Dict:
+    def inspect(self, workspace_id: str, data: dict) -> dict:
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id), "/sources/inspection"
         )
         return self.post(url, data, expected_status=200)
 
-    def list_columns(self, workspace_id: str, id: UUID, table_id: UUID) -> List[Dict]:
+    def list_columns(self, workspace_id: str, id: UUID, table_id: UUID) -> list[dict]:
         """
         Get all columns in a table
 
@@ -137,7 +137,7 @@ class SourceClient(BaseClient):
 
     def get_column(
         self, workspace_id: str, id: UUID, table_id: UUID, column_id: UUID
-    ) -> Dict:
+    ) -> dict:
         """
         Get a column from its column_id
 
@@ -150,7 +150,7 @@ class SourceClient(BaseClient):
         Returns:
             dict: a column
         """
-        
+
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id),
             f"{id}/profile/tables/{table_id}/columns/{column_id}",
@@ -158,7 +158,7 @@ class SourceClient(BaseClient):
         column = self.get(url)
         return column
 
-    def list_tables(self, workspace_id: str, id: UUID) -> List[Dict]:
+    def list_tables(self, workspace_id: str, id: UUID) -> list[dict]:
         """
         Get all tables in a datasource
 
@@ -175,7 +175,7 @@ class SourceClient(BaseClient):
         tables = self.get(url)
         return tables["data"]
 
-    def get_table(self, workspace_id: str, id: UUID, table_id: UUID) -> Dict:
+    def get_table(self, workspace_id: str, id: UUID, table_id: UUID) -> dict:
         """
         Get a table from its table id
 
@@ -193,7 +193,7 @@ class SourceClient(BaseClient):
         table = self.get(url)
         return table
 
-    def get_table_schema(self, workspace_id: str, id: UUID, table_name: str) -> Dict:
+    def get_table_schema(self, workspace_id: str, id: UUID, table_name: str) -> dict:
         """
         Get a table's schema by table name
 
@@ -211,7 +211,7 @@ class SourceClient(BaseClient):
         )
         return self.get(url)
 
-    def list_schemas(self, workspace_id: str, id: UUID) -> List[Dict]:
+    def list_schemas(self, workspace_id: str, id: UUID) -> list[dict]:
         """
         Get all schemas in the datasource
 
@@ -228,7 +228,7 @@ class SourceClient(BaseClient):
         schemas = self.get(url)
         return schemas["data"]
 
-    def get_schema(self, workspace_id: str, id: UUID, schema_id: UUID) -> Dict:
+    def get_schema(self, workspace_id: str, id: UUID, schema_id: UUID) -> dict:
         """
         Get a schema from its schema id
 
@@ -247,8 +247,8 @@ class SourceClient(BaseClient):
         return schema
 
     def update_profiler_config(
-        self, workspace_id: str, id: UUID, table_uuid: str, data: Dict
-    ) -> Dict:
+        self, workspace_id: str, id: UUID, table_uuid: str, data: dict
+    ) -> dict:
         """
         Update configuration for a table in a datasource
 
@@ -265,7 +265,7 @@ class SourceClient(BaseClient):
         )
         return self.put(url, data)
 
-    def trigger_source(self, workspace_id: str, id: UUID, data: Dict) -> Dict:
+    def trigger_source(self, workspace_id: str, id: UUID, data: dict) -> dict:
         """
         Trigger data collection on all triggered metrics in a datasource
 

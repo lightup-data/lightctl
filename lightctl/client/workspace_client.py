@@ -1,6 +1,5 @@
 import logging
 import urllib.parse
-from typing import Dict, List
 
 from lightctl.client.base_client import BaseClient
 
@@ -13,15 +12,16 @@ class WorkspaceClient(BaseClient):
 
     Example:
       wc = WorkspaceClient()
-      workspaces = wc.list_workspaces() 
+      workspaces = wc.list_workspaces()
       new_workspace = wc.create_workspace("test_workspace")
     """
+
     def workspaces_url(self) -> str:
         """
         Returns:
            str: The workspaces endpoint, used for getting existing workspaces, creating new workspaces, and deleting workspaces
         """
-        return urllib.parse.urljoin(self.url_base, f"/api/v1/workspaces/")
+        return urllib.parse.urljoin(self.url_base, "/api/v1/workspaces/")
 
     def create_workspace(self, name: str):
         """
@@ -30,7 +30,7 @@ class WorkspaceClient(BaseClient):
         Args:
             name (str): Name of workspace
 
-        Returns: 
+        Returns:
             dict: The workspace created
 
         Example:
@@ -43,21 +43,21 @@ class WorkspaceClient(BaseClient):
         res = self.post(url, payload)
         return res["data"]
 
-    def delete_workspace(self, workspace_id: str) -> Dict:
+    def delete_workspace(self, workspace_id: str) -> dict:
         """
         Delete a workspace
 
         Args:
             workspace_id (str): UUID of workspace
 
-        Returns: 
+        Returns:
             str: The uuid of the workspace deleted
         """
         # note that delete workspace is associated with different url.
         url = urllib.parse.urljoin(self.url_base, "/api/v1/ws/")
         return self.delete(url, workspace_id, force=True)
 
-    def list_workspaces(self) -> List[Dict]:
+    def list_workspaces(self) -> list[dict]:
         """
         Get all workspaces
 

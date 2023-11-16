@@ -1,6 +1,5 @@
 import logging
 import urllib.parse
-from typing import Dict
 
 from lightctl.client.base_client import BaseClient
 
@@ -16,15 +15,16 @@ class HealthzClient(BaseClient):
         hc.get_healthz_info()
 
     """
+
     @property
     def healthz_url(self) -> str:
         """
         Returns:
            str: The healthz endpoint
         """
-        return urllib.parse.urljoin(self.url_base, f"/api/v0/healthz/")
+        return urllib.parse.urljoin(self.url_base, "/api/v0/healthz/")
 
-    def get_healthz_info(self) -> Dict:
+    def get_healthz_info(self) -> dict:
         """
         Get healthz info
 

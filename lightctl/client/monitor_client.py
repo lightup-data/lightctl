@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Dict, List, Optional
+from typing import Optional
 from uuid import UUID
 
 from lightctl.client.base_client import BaseClient
@@ -27,6 +27,7 @@ class MonitorClient(BaseClient):
                 for monitor in monitor_list:
                     print("Workspace {workspace["name"]} Metric {metric["metatdata"]["name"]} Monitor {monitor["metadata"]["name"]}
     """
+
     def monitors_url(self, workspace_id: str) -> str:
         """
         Returns:
@@ -36,7 +37,7 @@ class MonitorClient(BaseClient):
             self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/monitors/"
         )
 
-    def list_monitors(self, workspace_id: str) -> List[Dict]:
+    def list_monitors(self, workspace_id: str) -> list[dict]:
         """
         Get all monitors in the workspace
 
@@ -49,7 +50,7 @@ class MonitorClient(BaseClient):
         res = self.get(self.monitors_url(workspace_id))
         return res.get("data", [])
 
-    def get_monitor(self, workspace_id: str, id: UUID) -> Dict:
+    def get_monitor(self, workspace_id: str, id: UUID) -> dict:
         """
         Get a monitor by its uuid
 
@@ -64,7 +65,7 @@ class MonitorClient(BaseClient):
         monitor = self.get(url)
         return monitor
 
-    def get_monitor_by_name(self, workspace_id: str, name: str) -> List[Dict]:
+    def get_monitor_by_name(self, workspace_id: str, name: str) -> list[dict]:
         """
         Get a monitor by its name
 
@@ -79,7 +80,7 @@ class MonitorClient(BaseClient):
         # name is not unique
         return self.get(url)
 
-    def create_monitor(self, workspace_id: str, data: Dict) -> Dict:
+    def create_monitor(self, workspace_id: str, data: dict) -> dict:
         """
         Create a monitor
 
@@ -92,7 +93,7 @@ class MonitorClient(BaseClient):
         """
         return self.post(self.monitors_url(workspace_id), data)
 
-    def update_monitor(self, workspace_id: str, id: UUID, data: Dict) -> Dict:
+    def update_monitor(self, workspace_id: str, id: UUID, data: dict) -> dict:
         """
         Update a monnitor
 
@@ -120,7 +121,7 @@ class MonitorClient(BaseClient):
 
     def get_monitors_by_metric(
         self, workspace_id: str, metric_uuid: UUID
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """
         Get all monitors on a metric
 

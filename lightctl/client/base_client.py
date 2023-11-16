@@ -5,7 +5,7 @@ import logging
 import os.path
 import urllib.parse
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 import requests
 
@@ -52,12 +52,12 @@ class BaseClient:
 
         self.access_token: Optional[str] = self._get_cached_access_token()
 
-    def get(self, endpoint: str) -> Dict:
+    def get(self, endpoint: str) -> dict:
         r = self._get(endpoint)
         check_status_code(r, 200)
         return json.loads(r.text)
 
-    def post(self, endpoint: str, data: Dict, expected_status: int = 201) -> Dict:
+    def post(self, endpoint: str, data: dict, expected_status: int = 201) -> dict:
         data = json.dumps(data, default=_json_serial)
         headers = get_headers()
         r = self._post(endpoint, data=data, headers=headers)
@@ -73,14 +73,14 @@ class BaseClient:
         check_status_code(r, 204)
         return {"id": id}
 
-    def put(self, endpoint: str, data: Dict, force: bool = False):
+    def put(self, endpoint: str, data: dict, force: bool = False):
         data = json.dumps(data, default=_json_serial)
         headers = get_headers(force)
         r = self._put(endpoint, data=data, headers=headers)
         check_status_code(r, 200)
         return json.loads(r.text)
 
-    def patch(self, endpoint: str, data: Dict, force: bool = False):
+    def patch(self, endpoint: str, data: dict, force: bool = False):
         data = json.dumps(data, default=_json_serial)
         headers = get_headers(force)
         r = self._patch(endpoint, data=data, headers=headers)
@@ -132,7 +132,7 @@ class BaseClient:
     def _get_cached_access_token() -> Optional[str]:
         if not Path(ACCESS_TOKEN_CACHE_FILE_PATH).exists():
             return None
-        with open(ACCESS_TOKEN_CACHE_FILE_PATH, "r") as f:
+        with open(ACCESS_TOKEN_CACHE_FILE_PATH) as f:
             return f.read()
 
     @staticmethod

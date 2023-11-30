@@ -19,7 +19,7 @@ source .lightctl/bin/activate
 
 Install using pip (Preferred):
 ```
-pip install lightctl==1.0.0 --find-links https://s3-us-west-2.amazonaws.com/pypi.lightup.ai/poc/lightctl/index.html
+pip install lightctl==1.0.0
 ```
 
 <details>

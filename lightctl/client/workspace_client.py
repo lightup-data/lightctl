@@ -85,7 +85,7 @@ class WorkspaceClient(BaseClient):
         Get the workspace with the given uuid
 
         Returns:
-            list: a list of workspaces with the given name
+            dict: the workspace with the given uuid
         """
         url = self.workspaces_url() + f"/{uuid}"
         res = self.get(url)

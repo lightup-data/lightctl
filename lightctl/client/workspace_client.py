@@ -66,3 +66,27 @@ class WorkspaceClient(BaseClient):
         """
         res = self.get(self.workspaces_url())
         return res["data"]
+
+    def get_workspaces_by_name(self, name: str) -> list[dict]:
+        """
+        Get all workspaces with the given name, exact match, case sensitive.
+        Note that this is not a unique name, so there may be multiple workspaces
+        with the same name.
+
+        Returns:
+            list: a list of workspaces with the given name
+        """
+        url = self.workspaces_url() + f"?name={name}"
+        res = self.get(url)
+        return res["data"]
+
+    def get_workspace_by_uuid(self, uuid: str) -> dict:
+        """
+        Get the workspace with the given uuid
+
+        Returns:
+            dict: the workspace with the given uuid
+        """
+        url = self.workspaces_url() + f"/{uuid}"
+        res = self.get(url)
+        return res["data"]

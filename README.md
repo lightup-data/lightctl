@@ -82,5 +82,3 @@ source ./dev.sh
 ```
 
 Currently, we test lightctl using the integration tests pointed to a test cluster. Test coverage is sparse. Unit and integration tests are needed.
-
-Lightctl is published using `ship.sh`. This pushes lightctl to the S3 bucket using s3pypi. Users that want to push another version need to have sufficient write permissions.

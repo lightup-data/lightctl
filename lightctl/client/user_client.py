@@ -1,5 +1,8 @@
 import logging
 import urllib.parse
+from typing import Optional
+
+import requests
 
 from lightctl.client.base_client import BaseClient
 
@@ -19,6 +22,8 @@ class UserClient(BaseClient):
         uc.add_user_to_workspace(workspace_to_update["uuid"], "user@hello.com", "editor")
 
     """
+
+    # app-user specific functions -----------------------------------------------------
 
     def app_users_url(self) -> str:
         """
@@ -54,8 +59,20 @@ class UserClient(BaseClient):
         Returns:
             dict: A user object
         """
-        quoted_user = urllib.parse.quote_plus(username)
-        url = urllib.parse.urljoin(self.app_users_url(), quoted_user)
+        user_id = self.get_user_id(username)
+        self.update_app_user_detail_by_user_id(user_id, payload)
+
+    def update_app_user_detail_by_user_id(self, user_id: int, payload: dict):
+        """
+        Update a user's detail in the app
+
+        Args:
+            user_id (int): User id of user to be updated
+            payload (dict): Properties to be modified
+        Returns:
+            dict: A user object
+        """
+        url = urllib.parse.urljoin(self.app_users_url(), str(user_id))
         return self.patch(url, payload)
 
     def update_app_user_role(self, username: str, role: str):
@@ -68,8 +85,21 @@ class UserClient(BaseClient):
         Returns:
             dict: A user object
         """
+        user_id = self.get_user_id(username)
+        return self.update_app_user_role_by_user_id(user_id, role)
+
+    def update_app_user_role_by_user_id(self, user_id: int, role: str):
+        """
+        Update a user's role in the app
+
+        Args:
+            user_id (int): User id of user to be updated
+            role (str): New role of user. Legal roles are "app_admin", "app_editor", "app_viewer"
+        Returns:
+            dict: A user object
+        """
         assert role in ["app_admin", "app_editor", "app_viewer"]
-        return self.update_app_user_detail(username, {"role": role})
+        return self.update_app_user_detail_by_user_id(user_id, {"role": role})
 
     def delete_app_user(self, username: str):
         """
@@ -79,14 +109,41 @@ class UserClient(BaseClient):
             username (str): Username (email) of user to be removed
 
         Returns:
-            ??
+            no content, 204
         """
-        quoted_user = urllib.parse.quote_plus(username)
+        user_id = self.get_user_id(username)
+        return self.delete_app_user_by_user_id(user_id)
+
+    def delete_app_user_by_user_id(self, user_id: int):
+        """
+        Remove a user from the app
+
+        Args:
+            user_id (int): user_id of user to be removed
+
+        Returns:
+            no content, 204
+        """
         url = self.app_users_url()
-        res = self.delete(url, quoted_user, force=True)
+        res = self.delete(url, user_id, force=True)
         return res
 
-    def get_app_user(self, username: str):
+    def get_user_id(self, username: str) -> Optional[int]:
+        """
+        Get an app user by username
+
+        Args:
+            username (str): Username (email) of user to be returned
+
+        Returns:
+            int: user id
+        """
+        user = self.get_app_user(username)
+        if user:
+            return user["id"]
+        raise requests.HTTPError(f"User {username} not found")
+
+    def get_app_user(self, username: str) -> Optional[dict]:
         """
         Get an app user by username
 
@@ -97,8 +154,27 @@ class UserClient(BaseClient):
             dict: A user object
         """
         quoted_user = urllib.parse.quote_plus(username)
-        url = urllib.parse.urljoin(self.app_users_url(), quoted_user)
-        return self.get(url)
+        url = urllib.parse.urljoin(self.app_users_url(), "?username=" + quoted_user)
+        users = self.get(url)
+        if users:
+            return users[0]
+        return None
+
+    def get_app_user_by_user_id(self, user_id: int) -> Optional[dict]:
+        """
+        Get an app user by user id
+
+        Args:
+            user_id (int): User id of the user
+
+        Returns:
+            dict: A user object
+        """
+        url = urllib.parse.urljoin(self.app_users_url(), str(user_id))
+        user = self.get(url)
+        if user:
+            return user
+        return None
 
     def list_app_users(self) -> list[dict]:
         """
@@ -113,7 +189,9 @@ class UserClient(BaseClient):
         res = self.get(self.app_users_url())
         return res
 
-    def users_url(self, workspace_id) -> str:
+    # workspace-user specific functions -----------------------------------------------
+
+    def workspace_users_url(self, workspace_id) -> str:
         """
         Returns:
            str: The workspace users endpoint, used for getting and modifying workspace users
@@ -134,7 +212,7 @@ class UserClient(BaseClient):
         Returns:
             dict: A user object with role set to the user's role in the workspace
         """
-        url = self.users_url(workspace_id)
+        url = self.workspace_users_url(workspace_id)
         payload = {"email": username, "role": role}
         res = self.post(url, payload)
         return res
@@ -148,9 +226,22 @@ class UserClient(BaseClient):
             username (str): Username (email) of user to be removed
 
         """
-        url = self.users_url(workspace_id)
-        quoted_user = urllib.parse.quote_plus(username)
-        return self.delete(url, quoted_user, force=True)
+        user_id = self.get_user_id(username)
+        return self.remove_user_by_user_id_from_workspace(workspace_id, user_id)
+
+    def remove_user_by_user_id_from_workspace(
+        self, workspace_id: str, user_id: int
+    ) -> dict:
+        """
+        Remove user from a workspace
+
+        Args:
+            workspace_id (str): Workspace id
+            user_id (int): user id of user to be removed
+
+        """
+        url = self.workspace_users_url(workspace_id)
+        return self.delete(url, user_id, force=True)
 
     def update_user_role(self, workspace_id: str, username: str, role: str):
         """
@@ -163,8 +254,11 @@ class UserClient(BaseClient):
         Returns:
             dict: A user object with role set to the user's role in the workspace
         """
-        quoted_user = urllib.parse.quote_plus(username)
-        url = urllib.parse.urljoin(self.users_url(workspace_id), quoted_user)
+        user_id = self.get_user_id(username)
+        return self.update_user_role_by_user_id(workspace_id, user_id, role)
+
+    def update_user_role_by_user_id(self, workspace_id: str, user_id: int, role: str):
+        url = urllib.parse.urljoin(self.workspace_users_url(workspace_id), str(user_id))
         payload = {"role": role}
         return self.patch(url, payload)
 
@@ -178,5 +272,5 @@ class UserClient(BaseClient):
         Returns:
             list: a list of users
         """
-        res = self.get(self.users_url(workspace_id))
+        res = self.get(self.workspace_users_url(workspace_id))
         return res

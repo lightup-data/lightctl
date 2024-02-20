@@ -15,7 +15,6 @@ source .lightctl-venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 
-# install pre-commit, use it Black as in .pre-commit-config.yaml
 python -m pip install pre-commit
 pre-commit install
 

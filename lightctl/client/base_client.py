@@ -10,9 +10,9 @@ from typing import Optional
 import requests
 
 from lightctl.config import (
-    ACCESS_TOKEN_CACHE_FILE_PATH,
     API_VERSION,
-    CREDENTIAL_FILE_PATH,
+    LIGHTCTL_CREDENTIAL_PATH,
+    LIGHTCTL_TOKEN_CACHE_PATH,
 )
 from lightctl.util import check_status_code
 
@@ -45,7 +45,7 @@ def refresh_token_if_needed(func):
 
 class BaseClient:
     def __init__(self):
-        with open(CREDENTIAL_FILE_PATH) as f:
+        with open(LIGHTCTL_CREDENTIAL_PATH) as f:
             self.credential = json.load(f)
             self.refresh_token = self.credential["data"]["refresh"]
             self.url_base = self.credential["data"]["server"]
@@ -130,14 +130,14 @@ class BaseClient:
 
     @staticmethod
     def _get_cached_access_token() -> Optional[str]:
-        if not Path(ACCESS_TOKEN_CACHE_FILE_PATH).exists():
+        if not Path(LIGHTCTL_TOKEN_CACHE_PATH).exists():
             return None
-        with open(ACCESS_TOKEN_CACHE_FILE_PATH) as f:
+        with open(LIGHTCTL_TOKEN_CACHE_PATH) as f:
             return f.read()
 
     @staticmethod
     def _set_cached_access_token(token: str):
-        with open(ACCESS_TOKEN_CACHE_FILE_PATH, "w") as f:
+        with open(LIGHTCTL_TOKEN_CACHE_PATH, "w") as f:
             return f.write(token)
 
 

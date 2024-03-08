@@ -4,7 +4,7 @@ from pathlib import Path
 API_VERSION = "v1"
 
 LIGHTCTL_TOKEN_CACHE_PATH = os.environ.get(
-    "CACHED_CREDENTIAL_PATH",
+    "LIGHTCTL_TOKEN_CACHE_PATH",
     os.path.join(str(Path.home()), ".lightup", ".access-token-cache"),
 )
 

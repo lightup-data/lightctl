@@ -113,3 +113,19 @@ class MetricClient(BaseClient):
             force (bool): if true, delete metric and all dependent monitors. If false, only delete metric if there are no dependent monitors
         """
         self.delete(self.metrics_url(workspace_id), f"{id}", force=force)
+
+    def get_table_samples(self, workspace_id: str, data: dict) -> dict:
+        """
+        Get table samples for a metric
+
+        Args:
+            workspace_id (str): Workspace id
+            data (dict): metric data
+
+        Returns:
+            dict: table samples
+        """
+        url = urllib.parse.urljoin(
+            self.metrics_url(workspace_id), "table-samples-preview"
+        )
+        return self.post(url, data, expected_status=200)

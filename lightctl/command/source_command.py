@@ -200,7 +200,7 @@ def update_table_profiler_config(context_obj, id, table_uuid, file):
 @click.pass_obj
 def create_table(context_obj, id, file):
     """
-    list a table profile in a datasource
+    create a table in a datasource
     """
     data = context_obj.file_loader.load(file)
     res = profiler_client.create_table(context_obj.workspace_id, id, data)
@@ -213,7 +213,7 @@ def create_table(context_obj, id, file):
 @click.pass_obj
 def delete_table(context_obj, id, table_uuid):
     """
-    delete a table profile in a datasource
+    delete a table in a datasource
     """
     res = source_client.delete_table(context_obj.workspace_id, id, table_uuid)
     context_obj.printer.print(res)

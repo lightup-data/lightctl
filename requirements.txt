@@ -1,4 +1,4 @@
 click==8.1
 pyyaml==6.0.1
-requests==2.31.0
+requests==2.32.0
 twine==4.0.2

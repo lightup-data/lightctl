@@ -84,3 +84,15 @@ def update(context_obj, id, file):
     data = context_obj.file_loader.load(file)
     res = metric_client.update_metric(context_obj.workspace_id, id, data)
     context_obj.printer.print(res)
+
+
+@metric.command()
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def get_table_samples(context_obj, file):
+    """
+    get samples of a table  in a datasource
+    """
+    data = context_obj.file_loader.load(file)
+    res = metric_client.get_table_samples(context_obj.workspace_id, data)
+    context_obj.printer.print(res)

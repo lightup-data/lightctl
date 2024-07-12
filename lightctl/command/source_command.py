@@ -1,8 +1,10 @@
 import click
 
+from lightctl.client.profiler_client import ProfilerClient
 from lightctl.client.source_client import SourceClient
 
 source_client = SourceClient()
+profiler_client = ProfilerClient()
 
 
 @click.group()
@@ -189,4 +191,29 @@ def update_table_profiler_config(context_obj, id, table_uuid, file):
     res = source_client.update_profiler_config(
         context_obj.workspace_id, id, table_uuid, data
     )
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def create_table(context_obj, id, file):
+    """
+    create a table in a datasource
+    """
+    data = context_obj.file_loader.load(file)
+    res = profiler_client.create_table(context_obj.workspace_id, id, data)
+    context_obj.printer.print(res)
+
+
+@source.command()
+@click.argument("id", type=click.UUID)
+@click.argument("table_uuid", type=click.UUID)
+@click.pass_obj
+def delete_table(context_obj, id, table_uuid):
+    """
+    delete a table in a datasource
+    """
+    res = source_client.delete_table(context_obj.workspace_id, id, table_uuid)
     context_obj.printer.print(res)

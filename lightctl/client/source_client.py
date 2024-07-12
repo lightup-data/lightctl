@@ -111,6 +111,22 @@ class SourceClient(BaseClient):
         """
         self.delete(self.sources_url(workspace_id), f"{id}")
 
+    def delete_table(self, workspace_id: str, id: str, table_id: str) -> dict:
+        """
+        Delete a table
+
+        Args:
+            workspace_id (str): Workspace id
+            id (UUID): id of datasource
+            table_id (UUID): id of table to delete
+
+        """
+        url = urllib.parse.urljoin(
+            self.sources_url(workspace_id), f"{id}/profile/tables/"
+        )
+
+        self.delete(url, table_id)
+
     def inspect(self, workspace_id: str, data: dict) -> dict:
         url = urllib.parse.urljoin(
             self.sources_url(workspace_id), "/sources/inspection"

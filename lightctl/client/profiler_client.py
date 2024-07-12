@@ -277,6 +277,23 @@ class ProfilerClient(BaseClient):
         url = urllib.parse.urljoin(base_url, tables_url)
         return self.get(url)
 
+    def create_table(self, workspace_id: str, source_uuid: str, data: dict) -> dict:
+        """
+        Create a table in a datasource
+
+        Args:
+            workspace_id (str): Workspace id
+            source_uuid (str): Datasource id
+            data (dict): Table data
+
+        Returns:
+            dict: Table data
+        """
+        base_url = self.profiler_base_url(workspace_id, source_uuid)
+
+        url = urllib.parse.urljoin(base_url, "tables")
+        return self.post(url, data)
+
     def list_columns(
         self, workspace_id: str, source_uuid: str, table_uuid: str
     ) -> list[dict]:

@@ -96,3 +96,15 @@ def get_table_samples(context_obj, file):
     data = context_obj.file_loader.load(file)
     res = metric_client.get_table_samples(context_obj.workspace_id, data)
     context_obj.printer.print(res)
+
+
+@metric.command()
+@click.argument("file", type=click.Path(exists=True))
+@click.pass_obj
+def preview(context_obj, file):
+    """
+    Preview metric from YAML or JSON file
+    """
+    data = context_obj.file_loader.load(file)
+    res = metric_client.preview_metric(context_obj.workspace_id, data)
+    context_obj.printer.print(res)

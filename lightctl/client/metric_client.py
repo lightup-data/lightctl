@@ -32,6 +32,15 @@ class MetricClient(BaseClient):
             self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/metrics/"
         )
 
+    def metrics_preview_url(self, workspace_id: str) -> str:
+        """
+        Returns:
+           str: The metrics preview endpoint, used for previewing metrics
+        """
+        return urllib.parse.urljoin(
+            self.url_base, f"/api/{API_VERSION}/ws/{workspace_id}/metrics/preview"
+        )
+
     def list_metrics(self, workspace_id: str) -> list[dict]:
         """
         Get all metrics in the workspace
@@ -84,6 +93,21 @@ class MetricClient(BaseClient):
             dict: the metric created
         """
         return self.post(self.metrics_url(workspace_id), data)
+
+    def preview_metric(self, workspace_id: str, data: dict) -> dict:
+        """
+        preview a metric
+
+        Args:
+            workspace_id (str): Workspace id
+            data (dict) attributes of metric
+
+        Returns:
+            dict: the metric created
+        """
+        return self.post(
+            self.metrics_preview_url(workspace_id), data, expected_status=200
+        )
 
     def update_metric(
         self, workspace_id: str, id: UUID, data: dict, force: bool = False

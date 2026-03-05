@@ -13,6 +13,8 @@ from lightctl.config import (
     API_VERSION,
     LIGHTCTL_CREDENTIAL_PATH,
     LIGHTCTL_TOKEN_CACHE_PATH,
+    LIGHTUP_REFRESH_TOKEN,
+    LIGHTUP_URL_BASE,
 )
 from lightctl.util import check_status_code
 
@@ -45,10 +47,14 @@ def refresh_token_if_needed(func):
 
 class BaseClient:
     def __init__(self):
-        with open(LIGHTCTL_CREDENTIAL_PATH) as f:
-            self.credential = json.load(f)
-            self.refresh_token = self.credential["data"]["refresh"]
-            self.url_base = self.credential["data"]["server"]
+        if LIGHTUP_URL_BASE is not None or  LIGHTUP_REFRESH_TOKEN is not None:
+            self.url_base = LIGHTUP_URL_BASE
+            self.refresh_token = LIGHTUP_REFRESH_TOKEN
+        else:
+            with open(LIGHTCTL_CREDENTIAL_PATH) as f:
+                self.credential = json.load(f)
+                self.refresh_token = self.credential["data"]["refresh"]
+                self.url_base = self.credential["data"]["server"]
 
         self.access_token: Optional[str] = self._get_cached_access_token()
 
@@ -137,6 +143,7 @@ class BaseClient:
 
     @staticmethod
     def _set_cached_access_token(token: str):
+        Path(LIGHTCTL_TOKEN_CACHE_PATH).parent.mkdir(parents=True, exist_ok=True)
         with open(LIGHTCTL_TOKEN_CACHE_PATH, "w") as f:
             return f.write(token)
 

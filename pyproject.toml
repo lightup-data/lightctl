@@ -1,0 +1,33 @@
+[project]
+name = "lightctl"
+version = "1.2.1"
+description = "Lightup CLI Tool"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Lightup Data Inc", email = "support@lightup.ai"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.8",
+    "License :: Other/Proprietary License",
+]
+dependencies = [
+    "click>=7.0",
+    "pyyaml>=5.3.1",
+    "requests>=2.22.0",
+]
+
+[project.urls]
+Homepage = "https://www.lightup.ai/"
+
+[project.scripts]
+lightctl = "lightctl.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = []

@@ -134,3 +134,8 @@ dmypy.json
 .pyre/
 
 .idea/
+
+# uv
+.python-version
+uv.lock
+.venv/
